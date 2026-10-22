@@ -242,7 +242,7 @@
         <!-- GLOBAL NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="javascript:void(0)" onclick="navigateTo('index.html')">
+                <a class="navbar-brand" href="index.html">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNkVwIyVxvNB7H_ob288BLm_G9ITl0F4U5zruA-xHIlw&s=10" alt="SendWave Logo" class="brand-logo"> SendWave
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
@@ -251,7 +251,7 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item">
-                            <a class="nav-link" id="nav-index" href="javascript:void(0)" onclick="navigateTo('index.html')">Home</a>
+                            <a class="nav-link active" id="nav-index" href="index.html">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="nav-eligibility" href="javascript:void(0)" onclick="navigateTo('eligibility.html')">Check Eligibility</a>
@@ -261,7 +261,7 @@
                         </li>
                     </ul>
                     <div class="d-flex align-items-center gap-2">
-                        <a href="javascript:void(0)" onclick="navigateTo('login.html')" class="btn btn-outline-dark me-2">Sign In</a>
+                        <a href="login.html" class="btn btn-outline-dark me-2">Sign In</a>
                         <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-green">Check Eligibility</a>
                     </div>
                 </div>
@@ -684,9 +684,9 @@
                                 Access your SendWave account or create a profile to manage your information and securely view customized lender connections.
                             </p>
 
-                            <!-- EXACT REQUIRED BUTTON HTML STRUCTURE -->
+                            <!-- EXACT REQUIRED BUTTON HTML STRUCTURE — navigates to login.html in same folder -->
                             <div class="mb-3">
-                                <a href="login.html" class="btn btn-primary proceed-btn w-100 py-3" onclick="handleProceedClick(event)">
+                                <a href="login.html" class="btn btn-primary proceed-btn w-100 py-3">
                                     Proceed to Login to SendWave
                                 </a>
                             </div>
@@ -695,78 +695,6 @@
                                 <p class="fw-bold mb-1 extra-small text-dark"><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Verification Notice</p>
                                 <p class="extra-small mb-0" style="font-size: 0.75rem;">
                                     Final eligibility, rates, and repayment terms are determined exclusively by the lender following document verification and complete credit underwriting.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- PAGE 4: login.html                         -->
-        <!-- ========================================== -->
-        <div id="page-login" class="page-view">
-            <div class="container py-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-6 col-lg-5">
-                        <div class="custom-card p-4 p-sm-5 shadow-lg">
-                            <div class="text-center mb-4">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNkVwIyVxvNB7H_ob288BLm_G9ITl0F4U5zruA-xHIlw&s=10" alt="SendWave Logo" class="mx-auto mb-2" style="width: 48px; height: 48px; border-radius: 12px; object-fit: cover;">
-                                <h1 class="h3 fw-bold text-navy">Sign in to SendWave</h1>
-                                <p class="text-muted small">Access your account portal and loan status</p>
-                            </div>
-
-                            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
-                                <div class="mb-3">
-                                    <label for="login-email" class="form-label fw-semibold">Email Address</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fa-solid fa-envelope text-muted"></i></span>
-                                        <input type="email" class="form-control" id="login-email" placeholder="name@example.com" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <label for="login-password" class="form-label fw-semibold m-0">Password</label>
-                                        <a href="javascript:void(0)" onclick="showForgotPasswordModal()" class="small text-decoration-none text-success">Forgot Password?</a>
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fa-solid fa-lock text-muted"></i></span>
-                                        <input type="password" class="form-control" id="login-password" placeholder="Enter password" required>
-                                        <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
-                                            <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4 form-check d-flex justify-content-between">
-                                    <div>
-                                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                                        <label class="form-check-label small text-muted" for="rememberMe">Remember me</label>
-                                    </div>
-                                </div>
-
-                                <div id="login-alert" class="alert alert-info py-2 d-none small">
-                                    Demonstration login submitted successfully.
-                                </div>
-
-                                <button type="submit" class="btn btn-green w-100 py-3 mb-3">
-                                    Sign In <i class="fa-solid fa-right-to-bracket ms-1"></i>
-                                </button>
-
-                                <div class="text-center pt-2 border-top">
-                                    <p class="small text-muted mb-0">
-                                        <a href="javascript:void(0)" onclick="navigateTo('index.html')" class="text-navy fw-semibold text-decoration-none">
-                                            <i class="fa-solid fa-arrow-left me-1"></i> Return to Home Page
-                                        </a>
-                                    </p>
-                                </div>
-                            </form>
-
-                            <div class="mt-4 p-3 bg-light rounded-3 text-center border">
-                                <p class="extra-small text-muted mb-0" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-shield-halved me-1 text-success"></i> Demonstration Login Interface. Real credentials are not transmitted or stored in static preview mode.
                                 </p>
                             </div>
                         </div>
@@ -792,7 +720,7 @@
                             <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('index.html')">Home</a></li>
                             <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('eligibility.html')">Check Eligibility</a></li>
                             <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('loan-details.html')">Loan Options</a></li>
-                            <li><a href="javascript:void(0)" onclick="navigateTo('login.html')">Portal Sign In</a></li>
+                            <li><a href="login.html">Portal Sign In</a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 col-6">
@@ -841,7 +769,7 @@
 
             // Intercept route hash if present
             const hash = window.location.hash.replace('#', '');
-            if (['index.html', 'eligibility.html', 'loan-details.html', 'login.html'].includes(hash)) {
+            if (['eligibility.html', 'loan-details.html'].includes(hash)) {
                 navigateTo(hash);
             }
         });
@@ -880,7 +808,7 @@
             renderLoanDetailsTable();
         }
 
-        // Navigation Controller
+        // Navigation Controller (SPA pages within index.html)
         function navigateTo(pageId) {
             // Hide all pages
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-page'));
@@ -999,44 +927,6 @@
             });
 
             tableBody.innerHTML = html;
-        }
-
-        // Exact Button Action Trigger
-        function handleProceedClick(e) {
-            e.preventDefault();
-            navigateTo('login.html');
-        }
-
-        // Password Show/Hide Toggle
-        function togglePasswordVisibility() {
-            const pwdInput = document.getElementById('login-password');
-            const pwdIcon = document.getElementById('togglePasswordIcon');
-
-            if (pwdInput.type === 'password') {
-                pwdInput.type = 'text';
-                pwdIcon.classList.remove('fa-eye');
-                pwdIcon.classList.add('fa-eye-slash');
-            } else {
-                pwdInput.type = 'password';
-                pwdIcon.classList.remove('fa-eye-slash');
-                pwdIcon.classList.add('fa-eye');
-            }
-        }
-
-        // Demonstration Login Submit
-        function handleLoginSubmit(e) {
-            e.preventDefault();
-            const alertBox = document.getElementById('login-alert');
-            alertBox.classList.remove('d-none');
-
-            setTimeout(() => {
-                alert('Demonstration Login: Connection simulated successfully! In a live environment, this connects to your authentication backend.');
-                alertBox.classList.add('d-none');
-            }, 600);
-        }
-
-        function showForgotPasswordModal() {
-            alert('Password Recovery Demonstration: A password reset link would be emailed to your registered address.');
         }
     </script>
 </body>
