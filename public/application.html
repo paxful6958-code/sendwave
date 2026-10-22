@@ -1,238 +1,1375 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoCash - Loan Application</title>
+    <title>SendMaster Loans | Transparent US Financial Options</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --navy-primary: #0a192f;
+            --navy-secondary: #1e293b;
+            --green-accent: #10b981;
+            --green-hover: #059669;
+            --light-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
         }
-        
-        html,
+
         body {
-            height: 100%;
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            overflow: hidden;
-        }
-        
-        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 10px;
+            min-height: 100vh;
         }
-        
-        header {
-            width: 100%;
-            max-width: 480px;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        /* Mode Switcher / File Exporter Toolbar top bar */
+        .workspace-bar {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1e293b;
         }
-        
-        .back-btn {
-            font-size: 28px;
-            background: none;
-            border: none;
+
+        .workspace-tab {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 4px 12px;
+            border-radius: 6px;
+            margin-right: 6px;
             cursor: pointer;
-            color: #333;
+            transition: all 0.2s;
         }
-        
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-        }
-        
-        .logo-eco {
-            color: #0066ff;
-        }
-        
-        .logo-cash {
-            color: #ff0000;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 24px;
-            padding: 40px 30px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        
-        .form-title {
-            font-size: 28px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .progress-bar {
-            width: 180px;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            margin: 30px auto;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            width: 33.33%;
-            height: 100%;
-            background: linear-gradient(to right, #4361ee, #7209b7);
-        }
-        
-        .step-text {
-            text-align: center;
-            color: #777;
-            font-size: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .form-label {
-            display: block;
+
+        .workspace-tab.active {
+            background-color: var(--green-accent);
+            border-color: var(--green-accent);
+            color: #ffffff;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 15px;
         }
-        
-        .form-select,
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            margin-bottom: 24px;
-            transition: border 0.3s;
+
+        /* Navbar Styling */
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--navy-primary) !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .form-select:focus,
-        .form-input:focus,
-        .form-textarea:focus {
-            border-color: #4361ee;
-            outline: none;
-        }
-        
-        .invalid {
-            border-color: #e74c3c !important;
-        }
-        
-        .next-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(to right, #4361ee, #7209b7);
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--navy-primary), var(--green-accent));
             color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--navy-secondary);
+            padding: 0.5rem 1rem !important;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--green-accent);
+        }
+
+        /* Custom Button Styling */
+        .btn-green {
+            background-color: var(--green-accent);
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.625rem 1.5rem;
             border: none;
-            border-radius: 50px;
-            font-size: 18px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-green:hover {
+            background-color: var(--green-hover);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -2px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-navy {
+            background-color: var(--navy-primary);
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.625rem 1.5rem;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-navy:hover {
+            background-color: var(--navy-secondary);
+            color: white;
+        }
+
+        /* Standardized Proceed Button */
+        .proceed-btn {
+            background-color: var(--navy-primary) !important;
+            border-color: var(--navy-primary) !important;
+            border-radius: 8px !important;
+            padding: 0.75rem 2rem !important;
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 4px 10px rgba(10, 25, 47, 0.2) !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .proceed-btn:hover {
+            background-color: var(--green-accent) !important;
+            border-color: var(--green-accent) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--navy-primary) 0%, #1e293b 100%);
+            color: white;
+            padding: 4rem 0 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.08);
+            pointer-events: none;
+        }
+
+        /* Cards & Components */
+        .custom-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .custom-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--green-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--navy-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
-            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .disclosure-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--navy-primary);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .calculator-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--card-border);
+            color: var(--text-dark);
+        }
+
+        /* Form Inputs */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--green-accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy-primary);
+            color: #94a3b8;
             margin-top: auto;
         }
-        
-        footer {
-            padding: 20px;
-            color: #aaa;
-            font-size: 13px;
-            text-align: center;
-            margin-top: auto;
+
+        footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--green-accent);
+        }
+
+        /* Code Viewer Formatting */
+        .code-container {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            max-height: 550px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Page Display Controller */
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active-page {
+            display: block;
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <button class="back-btn" onclick="history.back()">←</button>
-        <div class="logo"><span class="logo-eco">Eco</span><span class="logo-cash">Cash</span></div>
-        <div></div>
-    </header>
-    <main class="card">
-        <h1 class="form-title">Loan Application</h1>
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
+
+    <!-- TOP SYSTEM TOOLBAR (Simulates standalone site vs file viewer) -->
+    <div class="workspace-bar d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div class="d-flex align-items-center flex-wrap gap-1">
+            <span class="me-2 fw-bold text-white"><i class="fa-solid fa-layer-group me-1 text-success"></i> SendMaster Portal:</span>
+            <button class="workspace-tab active" onclick="switchMode('preview')"><i class="fa-solid fa-laptop me-1"></i> Interactive Live App</button>
+            <button class="workspace-tab" onclick="switchMode('files')"><i class="fa-solid fa-code me-1"></i> View Project Source Code</button>
         </div>
-        <div class="step-text">Step 1 of 3</div>
+        <div id="page-nav-quick" class="d-flex gap-1">
+            <span class="small text-muted me-2 align-self-center">Jump Page:</span>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('index.html')">Home</button>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('eligibility.html')">Eligibility</button>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('loan-details.html')">Details</button>
+            <button class="btn btn-sm btn-outline-light py-0 px-2 text-capitalize" onclick="navigateTo('login.html')">Login</button>
+        </div>
+    </div>
 
-        <label class="form-label">Loan Type</label>
-        <select class="form-select" id="loanType">
-            <option>Personal Loan</option>
-            <option>Business Loan</option>
-            <option>Home Loan</option>
-            <option>Car Loan</option>
-            <option>Education Loan</option>
-        </select>
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-preview-container">
+        <!-- GLOBAL NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+            <div class="container">
+                <a class="navbar-brand" href="javascript:void(0)" onclick="navigateTo('index.html')">
+                    <span class="brand-icon">S</span> SendMaster
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-index" href="javascript:void(0)" onclick="navigateTo('index.html')">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-eligibility" href="javascript:void(0)" onclick="navigateTo('eligibility.html')">Check Eligibility</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-loan-details" href="javascript:void(0)" onclick="navigateTo('loan-details.html')">Loan Details</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="javascript:void(0)" onclick="navigateTo('login.html')" class="btn btn-outline-dark me-2">Sign In</a>
+                        <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-green">Check Eligibility</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-        <label class="form-label">Loan Amount ($)</label>
-        <input type="number" class="form-input" id="loanAmount" placeholder="5000" min="100" max="5000">
+        <!-- ========================================== -->
+        <!-- PAGE 1: index.html                          -->
+        <!-- ========================================== -->
+        <div id="page-index" class="page-view active-page">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="row align-items-center gy-5">
+                        <div class="col-lg-6">
+                            <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 mb-3 px-3 py-2 rounded-pill">
+                                <i class="fa-solid fa-shield-halved me-1"></i> Transparent Lending Information
+                            </span>
+                            <h1 class="display-5 fw-bold mb-3">Explore Your Loan Options</h1>
+                            <p class="lead text-light opacity-75 mb-4">
+                                Review customizable personal loan possibilities, understand U.S. lending eligibility requirements, and estimate your payments transparently before you connect with a lender.
+                            </p>
+                            <div class="d-flex flex-wrap gap-3">
+                                <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-green btn-lg px-4">
+                                    Check Eligibility <i class="fa-solid fa-arrow-right ms-2"></i>
+                                </a>
+                                <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4">How It Works</a>
+                            </div>
+                            <div class="mt-4 pt-2 d-flex align-items-center gap-4 text-light opacity-75 small">
+                                <div><i class="fa-solid fa-check text-success me-1"></i> No Credit Score Impact to Check</div>
+                                <div><i class="fa-solid fa-check text-success me-1"></i> Transparent Terms</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="calculator-box">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h3 class="h5 fw-bold m-0"><i class="fa-solid fa-calculator text-success me-2"></i> Loan Estimate Preview</h3>
+                                    <span class="badge bg-light text-dark border">Informational</span>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="hero-amount" class="form-label fw-semibold d-flex justify-content-between">
+                                        <span>Desired Amount:</span>
+                                        <span class="text-success fw-bold" id="hero-amount-val">$10,000</span>
+                                    </label>
+                                    <input type="range" class="form-range" id="hero-amount" min="1000" max="40000" step="500" value="10000" oninput="updateHeroCalc()">
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>$1,000</span>
+                                        <span>$40,000</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="hero-term" class="form-label fw-semibold">Repayment Term:</label>
+                                    <select class="form-select" id="hero-term" onchange="updateHeroCalc()">
+                                        <option value="24">24 Months (2 Years)</option>
+                                        <option value="36" selected>36 Months (3 Years)</option>
+                                        <option value="48">48 Months (4 Years)</option>
+                                        <option value="60">60 Months (5 Years)</option>
+                                    </select>
+                                </div>
+                                <div class="p-3 bg-light rounded-3 mb-4 border">
+                                    <div class="row text-center">
+                                        <div class="col-6 border-end">
+                                            <div class="small text-muted mb-1">Est. Monthly Payment</div>
+                                            <div class="h4 fw-bold text-navy m-0" id="hero-monthly-payment">$322 / mo</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="small text-muted mb-1">Representative APR Range</div>
+                                            <div class="h6 fw-bold text-dark m-0 pt-1">5.99% - 24.99%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="saveAndProceedToEligibility()" class="btn btn-green w-100 py-3">
+                                    Check Eligibility With This Amount <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </button>
+                                <p class="text-muted text-center extra-small mt-2 mb-0" style="font-size: 0.75rem;">
+                                    *Estimate only. Actual rate and terms vary by participating lender and verified borrower criteria.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <label class="form-label">Loan Term</label>
-        <select class="form-select" id="loanTerm">
-            <option>6 Months</option>
-            <option>12 Months</option>
-            <option>18 Months</option>
-            <option>24 Months</option>
-            <option>36 Months</option>
-            <option>48 Months</option>
-            <option>60 Months</option>
-        </select>
+            <!-- Key Features / Value Pillars -->
+            <section class="py-5">
+                <div class="container">
+                    <div class="text-center max-width-700 mx-auto mb-5">
+                        <h2 class="fw-bold">Why Explore Loans Through SendMaster?</h2>
+                        <p class="text-muted">We prioritize financial clarity, plain-language legal criteria, and user privacy.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+                                <h3 class="h5 fw-bold">Clear Information</h3>
+                                <p class="text-muted small mb-0">Learn about interest structures, origination fees, and repayment schedules upfront before committing.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-user-shield"></i></div>
+                                <h3 class="h5 fw-bold">U.S. Eligibility Criteria</h3>
+                                <p class="text-muted small mb-0">Review standard lending benchmarks including legal age, verifiable income, and residency requirements.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-handshake"></i></div>
+                                <h3 class="h5 fw-bold">Repayment Transparency</h3>
+                                <p class="text-muted small mb-0">No hidden surprises. Calculate sample schedules and understand total cost of borrowing.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-card p-4 h-100">
+                                <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+                                <h3 class="h5 fw-bold">Customer Support</h3>
+                                <p class="text-muted small mb-0">Our support team is available to assist with questions regarding application navigation and process updates.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <label class="form-label">Purpose of Loan</label>
-        <textarea class="form-textarea" id="loanPurpose" placeholder="What will you use the loan for?"></textarea>
+            <!-- Step by Step Section -->
+            <section id="how-it-works" class="py-5 bg-white border-top border-bottom">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold">Simple 3-Step Information Process</h2>
+                        <p class="text-muted">Navigating your options without pressure</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="p-4 rounded-3 bg-light border h-100">
+                                <div class="step-badge">1</div>
+                                <h3 class="h5 fw-bold">Review Eligibility Criteria</h3>
+                                <p class="text-muted small mb-0">Explore standard U.S. consumer loan guidelines and submit non-sensitive criteria to tailor information.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 rounded-3 bg-light border h-100">
+                                <div class="step-badge">2</div>
+                                <h3 class="h5 fw-bold">Examine Loan Terms</h3>
+                                <p class="text-muted small mb-0">Understand potential APRs, term options, origination fees, and repayment obligations in detail.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 rounded-3 bg-light border h-100">
+                                <div class="step-badge">3</div>
+                                <h3 class="h5 fw-bold">Access SendMaster Portal</h3>
+                                <p class="text-muted small mb-0">Proceed to account login to track updates or interact with connected lender services securely.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-navy btn-lg">Start by Checking Eligibility</a>
+                    </div>
+                </div>
+            </section>
 
-        <button class="next-btn" id="nextBtn">NEXT STEP</button>
-    </main>
-    <footer>© 2025 EcoCash</footer>
+            <!-- Disclosure Banner -->
+            <section class="py-4 bg-light">
+                <div class="container">
+                    <div class="disclosure-box">
+                        <p class="fw-bold mb-1"><i class="fa-solid fa-circle-info me-1 text-primary"></i> Important Consumer Disclosure</p>
+                        <p class="mb-0">
+                            SendMaster is an informational loan platform and financial service portal intended for U.S. residents. SendMaster is not a direct lender for all products and does not guarantee loan approval or specific interest rates. All loan decisions, rates, and terms depend on formal identity verification, credit checks, and final underwriting approval by a participating lender.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
 
+        <!-- ========================================== -->
+        <!-- PAGE 2: eligibility.html                   -->
+        <!-- ========================================== -->
+        <div id="page-eligibility" class="page-view">
+            <div class="bg-navy text-white py-4 mb-4" style="background-color: var(--navy-primary);">
+                <div class="container">
+                    <h1 class="h2 fw-bold text-white mb-2">Check Your Loan Eligibility</h1>
+                    <p class="text-light opacity-75 mb-0">Review common U.S. lending standards and test your preferred options safely.</p>
+                </div>
+            </div>
+
+            <div class="container mb-5">
+                <div class="row g-4">
+                    <!-- Left: Educational Requirements -->
+                    <div class="col-lg-5">
+                        <div class="custom-card p-4 h-100">
+                            <h2 class="h5 fw-bold mb-3"><i class="fa-solid fa-list-check text-success me-2"></i> Standard U.S. Lending Criteria</h2>
+                            <p class="text-muted small mb-4">To qualify for a personal loan with most U.S. financial institutions, applicants generally must satisfy the following basic requirements:</p>
+
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-cake-candles"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">Legal Age Requirement</h3>
+                                    <p class="text-muted small mb-0">You must be at least 18 years old (or 19 in certain states like AL and NE).</p>
+                                </div>
+                            </div>
+                            <hr class="my-3 text-muted opacity-25">
+
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-flag-usa"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">U.S. Citizenship or Legal Residency</h3>
+                                    <p class="text-muted small mb-0">A valid Social Security Number (SSN) or Permanent Resident Card with a valid U.S. street address.</p>
+                                </div>
+                            </div>
+                            <hr class="my-3 text-muted opacity-25">
+
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-briefcase"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">Verifiable Regular Income</h3>
+                                    <p class="text-muted small mb-0">Demonstrable steady employment, self-employment, or regular retirement/disability benefit income.</p>
+                                </div>
+                            </div>
+                            <hr class="my-3 text-muted opacity-25">
+
+                            <div class="d-flex">
+                                <div class="me-3 text-success fs-5"><i class="fa-solid fa-credit-card"></i></div>
+                                <div>
+                                    <h3 class="h6 fw-bold mb-1">Credit & Banking Assessment</h3>
+                                    <p class="text-muted small mb-0">Active bank account for funds disbursement and a credit check assessing payment history and debt ratios.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Informational Demo Form -->
+                    <div class="col-lg-7">
+                        <div class="custom-card p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4 fw-bold m-0">Eligibility Demonstration Form</h2>
+                                <span class="badge bg-warning text-dark"><i class="fa-solid fa-lock-open me-1"></i> Non-Sensitive Info Only</span>
+                            </div>
+                            
+                            <div class="alert alert-info border-0 rounded-3 small mb-4">
+                                <i class="fa-solid fa-circle-info me-1"></i> <strong>Informational Notice:</strong> This interactive form collects general preferences to customize information on the next page. It does <strong>not</strong> require SSN, banking details, or full legal identity, and submitting it does not constitute a real credit inquiry or official approval.
+                            </div>
+
+                            <form id="eligibilityForm" onsubmit="handleEligibilitySubmit(event)">
+                                <div class="mb-3">
+                                    <label for="el-amount" class="form-label fw-semibold">Preferred Loan Amount ($USD)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="el-amount" min="1000" max="50000" step="500" placeholder="e.g. 10000" required>
+                                    </div>
+                                    <div class="form-text">Enter an amount between $1,000 and $50,000.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="el-purpose" class="form-label fw-semibold">Primary Loan Purpose</label>
+                                    <select class="form-select" id="el-purpose" required>
+                                        <option value="" selected disabled>Select a purpose...</option>
+                                        <option value="Debt Consolidation">Debt Consolidation</option>
+                                        <option value="Home Improvement">Home Improvement</option>
+                                        <option value="Major Expense">Major / Emergency Expense</option>
+                                        <option value="Business Expansion">Small Business Expenses</option>
+                                        <option value="Auto / Vehicle">Vehicle Purchase / Repair</option>
+                                    </select>
+                                </div>
+
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="el-state" class="form-label fw-semibold">State of Residence</label>
+                                        <select class="form-select" id="el-state" required>
+                                            <option value="" selected disabled>Select State...</option>
+                                            <option value="CA">California (CA)</option>
+                                            <option value="FL">Florida (FL)</option>
+                                            <option value="NY">New York (NY)</option>
+                                            <option value="TX">Texas (TX)</option>
+                                            <option value="IL">Illinois (IL)</option>
+                                            <option value="OTHER">Other U.S. State</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="el-income" class="form-label fw-semibold">Estimated Annual Income</label>
+                                        <select class="form-select" id="el-income" required>
+                                            <option value="" selected disabled>Select Income Range...</option>
+                                            <option value="Under $35,000">Under $35,000</option>
+                                            <option value="$35,000 - $60,000">$35,000 - $60,000</option>
+                                            <option value="$60,000 - $100,000">$60,000 - $100,000</option>
+                                            <option value="Over $100,000">Over $100,000</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 form-check">
+                                    <input type="checkbox" class="form-check-input" id="el-terms" required>
+                                    <label class="form-check-label small text-muted" for="el-terms">
+                                        I understand that this is a non-binding demonstration tool to preview sample terms and loan details.
+                                    </label>
+                                </div>
+
+                                <div id="eligibility-error" class="alert alert-danger py-2 d-none small">
+                                    Please fill out all required fields properly.
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center pt-2">
+                                    <a href="javascript:void(0)" onclick="navigateTo('index.html')" class="btn btn-outline-secondary">Back to Home</a>
+                                    <button type="submit" class="btn btn-green btn-lg px-4">
+                                        Continue <i class="fa-solid fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PAGE 3: loan-details.html                  -->
+        <!-- ========================================== -->
+        <div id="page-loan-details" class="page-view">
+            <div class="bg-navy text-white py-4 mb-4" style="background-color: var(--navy-primary);">
+                <div class="container">
+                    <h1 class="h2 fw-bold text-white mb-2">Review Your Loan Options</h1>
+                    <p class="text-light opacity-75 mb-0">Transparent terms breakdown based on your preferences.</p>
+                </div>
+            </div>
+
+            <div class="container mb-5">
+                <!-- User Selected Options Summary Banner -->
+                <div class="custom-card p-4 mb-4 bg-white border-start border-4 border-success">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="h5 fw-bold mb-2">Selection Summary</h2>
+                            <p class="text-muted small mb-1">
+                                Preferred Amount: <strong class="text-dark" id="summary-amount">$10,000</strong> &bull; 
+                                Purpose: <strong class="text-dark" id="summary-purpose">Debt Consolidation</strong>
+                            </p>
+                            <p class="text-muted small mb-0">
+                                Residence: <strong class="text-dark" id="summary-state">CA</strong> &bull; 
+                                Income Bracket: <strong class="text-dark" id="summary-income">$60,000 - $100,000</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <a href="javascript:void(0)" onclick="navigateTo('eligibility.html')" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa-solid fa-pen-to-square me-1"></i> Adjust Selection
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Term Options Breakdown -->
+                    <div class="col-lg-8">
+                        <div class="custom-card p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-3"><i class="fa-solid fa-table-list text-success me-2"></i> Representative Repayment Options</h3>
+                            <p class="text-muted small mb-4">Below is an example breakdown of standard repayment terms for the selected amount. Actual available options will depend on underwriting.</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle border">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Term</th>
+                                            <th>Sample APR Range</th>
+                                            <th>Est. Monthly Payment</th>
+                                            <th>Total Payments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="terms-table-body">
+                                        <!-- Dynamically populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Important Terms & Conditions Explanations -->
+                        <div class="custom-card p-4">
+                            <h3 class="h5 fw-bold mb-3"><i class="fa-solid fa-scale-balanced text-navy me-2"></i> Key Lending Terms Explained</h3>
+                            <div class="accordion" id="loanTermsAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc1">
+                                            Annual Percentage Rate (APR) & Fees
+                                        </button>
+                                    </h2>
+                                    <div id="acc1" class="accordion-collapse collapse show" data-bs-parent="#loanTermsAccordion">
+                                        <div class="accordion-body small text-muted">
+                                            APR reflects the total annual cost of borrowing, including interest rate and any lender origination fees (typically ranging from 1% to 6% of loan amount). Qualified applicants receive specific interest offers after full lender evaluation.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2">
+                                            Prepayment & Late Penalties
+                                        </button>
+                                    </h2>
+                                    <div id="acc2" class="accordion-collapse collapse" data-bs-parent="#loanTermsAccordion">
+                                        <div class="accordion-body small text-muted">
+                                            SendMaster partner networks emphasize flexible repayment. Most personal loans feature no prepayment penalties, allowing you to pay off your balance early to save on interest.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3">
+                                            Credit Assessment & Soft Inquiry
+                                        </button>
+                                    </h2>
+                                    <div id="acc3" class="accordion-collapse collapse" data-bs-parent="#loanTermsAccordion">
+                                        <div class="accordion-body small text-muted">
+                                            Initial eligibility checks utilize soft credit inquiries which do not impact your credit score. If you proceed with a specific lender application, a hard credit check may be performed.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column Action & Disclosures -->
+                    <div class="col-lg-4">
+                        <div class="custom-card p-4 text-center sticky-lg-top" style="top: 90px; z-index: 10;">
+                            <div class="feature-icon mx-auto"><i class="fa-solid fa-user-check"></i></div>
+                            <h3 class="h5 fw-bold mb-2">Ready to Proceed?</h3>
+                            <p class="text-muted small mb-4">
+                                Access your SendMaster account or create a profile to manage your information and securely view customized lender connections.
+                            </p>
+
+                            <!-- EXACT REQUIRED BUTTON HTML STRUCTURE -->
+                            <div class="mb-3">
+                                <a href="login.html" class="btn btn-primary proceed-btn w-100 py-3" onclick="handleProceedClick(event)">
+                                    Proceed to Login to SendMaster
+                                </a>
+                            </div>
+
+                            <div class="disclosure-box text-start mt-4">
+                                <p class="fw-bold mb-1 extra-small text-dark"><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Verification Notice</p>
+                                <p class="extra-small mb-0" style="font-size: 0.75rem;">
+                                    Final eligibility, rates, and repayment terms are determined exclusively by the lender following document verification and complete credit underwriting.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PAGE 4: login.html                         -->
+        <!-- ========================================== -->
+        <div id="page-login" class="page-view">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                        <div class="custom-card p-4 p-sm-5 shadow-lg">
+                            <div class="text-center mb-4">
+                                <div class="brand-icon mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.5rem;">S</div>
+                                <h1 class="h3 fw-bold text-navy">Sign in to SendMaster</h1>
+                                <p class="text-muted small">Access your account portal and loan status</p>
+                            </div>
+
+                            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label fw-semibold">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                        <input type="email" class="form-control" id="login-email" placeholder="name@example.com" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label for="login-password" class="form-label fw-semibold m-0">Password</label>
+                                        <a href="javascript:void(0)" onclick="showForgotPasswordModal()" class="small text-decoration-none text-success">Forgot Password?</a>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-lock text-muted"></i></span>
+                                        <input type="password" class="form-control" id="login-password" placeholder="Enter password" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
+                                            <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 form-check d-flex justify-content-between">
+                                    <div>
+                                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                                        <label class="form-check-label small text-muted" for="rememberMe">Remember me</label>
+                                    </div>
+                                </div>
+
+                                <div id="login-alert" class="alert alert-info py-2 d-none small">
+                                    Demonstration login submitted successfully.
+                                </div>
+
+                                <button type="submit" class="btn btn-green w-100 py-3 mb-3">
+                                    Sign In <i class="fa-solid fa-right-to-bracket ms-1"></i>
+                                </button>
+
+                                <div class="text-center pt-2 border-top">
+                                    <p class="small text-muted mb-0">
+                                        <a href="javascript:void(0)" onclick="navigateTo('index.html')" class="text-navy fw-semibold text-decoration-none">
+                                            <i class="fa-solid fa-arrow-left me-1"></i> Return to Home Page
+                                        </a>
+                                    </p>
+                                </div>
+                            </form>
+
+                            <div class="mt-4 p-3 bg-light rounded-3 text-center border">
+                                <p class="extra-small text-muted mb-0" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-shield-halved me-1 text-success"></i> Demonstration Login Interface. Real credentials are not transmitted or stored in static preview mode.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GLOBAL FOOTER -->
+        <footer class="py-4 mt-auto">
+            <div class="container">
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="brand-icon" style="width:28px; height:28px; font-size:0.9rem;">S</span>
+                            <span class="fw-bold text-white fs-5">SendMaster</span>
+                        </div>
+                        <p class="small text-muted mb-0">Connecting consumers with clear loan educational resources and lender network options across the United States.</p>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <h2 class="h6 text-white fw-bold mb-3">Navigation</h2>
+                        <ul class="list-unstyled small mb-0">
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('index.html')">Home</a></li>
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('eligibility.html')">Check Eligibility</a></li>
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="navigateTo('loan-details.html')">Loan Options</a></li>
+                            <li><a href="javascript:void(0)" onclick="navigateTo('login.html')">Portal Sign In</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <h2 class="h6 text-white fw-bold mb-3">Legal & Disclosures</h2>
+                        <ul class="list-unstyled small mb-0">
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="alert('Privacy Policy: SendMaster protects user privacy and non-sensitive demo entries.')">Privacy Policy</a></li>
+                            <li class="mb-2"><a href="javascript:void(0)" onclick="alert('Terms of Service: SendMaster provides informational loan content.')">Terms of Service</a></li>
+                            <li><a href="javascript:void(0)" onclick="alert('Contact: support@sendmaster-loans-demo.us')">Customer Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h2 class="h6 text-white fw-bold mb-3">Regulatory Notice</h2>
+                        <p class="extra-small text-muted mb-0" style="font-size: 0.75rem;">
+                            SendMaster does not guarantee loan approval. Rates and terms are subject to final underwriting, verification, and criteria set by third-party participating financial institutions.
+                        </p>
+                    </div>
+                </div>
+                <div class="border-top border-secondary pt-3 text-center extra-small text-muted" style="font-size: 0.8rem;">
+                    &copy; 2026 SendMaster Loans USA. All rights reserved. Demonstration Financial Services Web Platform.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- CODE FILE VIEWER CONTAINER (Hidden by default, switched via top bar) -->
+    <div id="code-files-container" class="container py-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="h4 fw-bold mb-1"><i class="fa-solid fa-folder-tree text-primary me-2"></i> Project Directory: sendmaster-loans/</h2>
+                <p class="text-muted small mb-0">Click any file below to inspect or copy source code.</p>
+            </div>
+            <button class="btn btn-outline-dark btn-sm" onclick="switchMode('preview')"><i class="fa-solid fa-xmark me-1"></i> Close Source Viewer</button>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="list-group shadow-sm">
+                    <button class="list-group-item list-group-item-action active fw-semibold" id="file-btn-index" onclick="showFileCode('index.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> index.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-eligibility" onclick="showFileCode('eligibility.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> eligibility.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-details" onclick="showFileCode('loan-details.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> loan-details.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-login" onclick="showFileCode('login.html')">
+                        <i class="fa-brands fa-html5 me-2 text-warning"></i> login.html
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-css" onclick="showFileCode('css/style.css')">
+                        <i class="fa-brands fa-css3-alt me-2 text-info"></i> css/style.css
+                    </button>
+                    <button class="list-group-item list-group-item-action fw-semibold" id="file-btn-js" onclick="showFileCode('js/script.js')">
+                        <i class="fa-brands fa-js me-2 text-warning"></i> js/script.js
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <span id="current-filename" class="fw-bold font-monospace">index.html</span>
+                        <button class="btn btn-sm btn-success" onclick="copyCurrentCode()"><i class="fa-regular fa-copy me-1"></i> Copy File Code</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="code-container" id="file-code-display">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App JavaScript Logic & Multi-Page Simulator -->
     <script>
-        // Pre-fill
-        if (localStorage.getItem('loanAmount')) document.getElementById('loanAmount').value = localStorage.getItem('loanAmount');
-        if (localStorage.getItem('loanTerm')) document.getElementById('loanTerm').value = localStorage.getItem('loanTerm') + ' Months';
+        // Global State & Storage Key
+        const STORAGE_KEY = 'sendmaster_loan_selection';
 
-        document.getElementById('nextBtn').addEventListener('click', function() {
-            const amount = document.getElementById('loanAmount').value.trim();
-            const purpose = document.getElementById('loanPurpose').value.trim();
+        // Default Loan Selection State
+        let currentLoanData = {
+            amount: 10000,
+            purpose: 'Debt Consolidation',
+            state: 'CA',
+            income: '$60,000 - $100,000'
+        };
 
-            let valid = true;
-            document.querySelectorAll('.form-input, .form-textarea').forEach(el => el.classList.remove('invalid'));
+        // Initialize App on DOM Load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedState();
+            updateHeroCalc();
+            renderLoanDetailsTable();
 
-            if (!amount || amount < 100) {
-                document.getElementById('loanAmount').classList.add('invalid');
-                valid = false;
+            // Intercept route hash if present
+            const hash = window.location.hash.replace('#', '');
+            if (['index.html', 'eligibility.html', 'loan-details.html', 'login.html'].includes(hash)) {
+                navigateTo(hash);
             }
-            if (!purpose) {
-                document.getElementById('loanPurpose').classList.add('invalid');
-                valid = false;
+        });
+
+        // Load persisted choices from LocalStorage
+        function loadSavedState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    currentLoanData = JSON.parse(saved);
+                } catch(e) {
+                    console.error('Could not parse saved loan state', e);
+                }
             }
 
-            if (!valid) {
-                alert('Please fill in all required fields.');
+            // Sync Inputs
+            const elAmt = document.getElementById('el-amount');
+            if (elAmt) elAmt.value = currentLoanData.amount;
+
+            const elPurp = document.getElementById('el-purpose');
+            if (elPurp) elPurp.value = currentLoanData.purpose;
+
+            const elState = document.getElementById('el-state');
+            if (elState) elState.value = currentLoanData.state;
+
+            const elInc = document.getElementById('el-income');
+            if (elInc) elInc.value = currentLoanData.income;
+
+            updateSummaryDisplay();
+        }
+
+        // Save choices to LocalStorage
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentLoanData));
+            updateSummaryDisplay();
+            renderLoanDetailsTable();
+        }
+
+        // Navigation Controller
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-page'));
+            
+            // Show target page
+            const target = document.getElementById('page-' + pageId.replace('.html', ''));
+            if (target) {
+                target.classList.add('active-page');
+            }
+
+            // Update active nav links
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            const activeNavLink = document.getElementById('nav-' + pageId.replace('.html', ''));
+            if (activeNavLink) activeNavLink.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Ensure mode is preview
+            switchMode('preview');
+        }
+
+        // Hero Calculator Input Event
+        function updateHeroCalc() {
+            const amountInput = document.getElementById('hero-amount');
+            const termInput = document.getElementById('hero-term');
+            
+            if (!amountInput || !termInput) return;
+
+            const amount = parseFloat(amountInput.value);
+            const termMonths = parseInt(termInput.value);
+
+            document.getElementById('hero-amount-val').textContent = '$' + amount.toLocaleString();
+
+            // Simple representative calculation formula (~10.5% interest rate baseline)
+            const monthlyRate = 0.105 / 12;
+            const monthlyPayment = (amount * monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / (Math.pow(1 + monthlyRate, termMonths) - 1);
+
+            document.getElementById('hero-monthly-payment').textContent = '$' + Math.round(monthlyPayment).toLocaleString() + ' / mo';
+
+            // Sync to global object
+            currentLoanData.amount = amount;
+        }
+
+        function saveAndProceedToEligibility() {
+            saveState();
+            navigateTo('eligibility.html');
+        }
+
+        // Eligibility Form Handler
+        function handleEligibilitySubmit(e) {
+            e.preventDefault();
+
+            const amount = document.getElementById('el-amount').value;
+            const purpose = document.getElementById('el-purpose').value;
+            const state = document.getElementById('el-state').value;
+            const income = document.getElementById('el-income').value;
+            const termsChecked = document.getElementById('el-terms').checked;
+
+            const errBox = document.getElementById('eligibility-error');
+
+            if (!amount || !purpose || !state || !income || !termsChecked) {
+                errBox.classList.remove('d-none');
                 return;
             }
 
-            localStorage.setItem('loanType', document.getElementById('loanType').value);
-            localStorage.setItem('loanAmount', amount);
-            localStorage.setItem('loanTerm', document.getElementById('loanTerm').value.replace(' Months', ''));
-            localStorage.setItem('loanPurpose', purpose || 'Not specified');
+            errBox.classList.add('d-none');
 
-            window.location.href = 'details.html';
-        });
+            // Save preferences
+            currentLoanData = {
+                amount: parseInt(amount),
+                purpose: purpose,
+                state: state,
+                income: income
+            };
+
+            saveState();
+            navigateTo('loan-details.html');
+        }
+
+        // Update Summary Banner on Page 3
+        function updateSummaryDisplay() {
+            const sumAmt = document.getElementById('summary-amount');
+            if (sumAmt) sumAmt.textContent = '$' + currentLoanData.amount.toLocaleString();
+
+            const sumPurp = document.getElementById('summary-purpose');
+            if (sumPurp) sumPurp.textContent = currentLoanData.purpose;
+
+            const sumState = document.getElementById('summary-state');
+            if (sumState) sumState.textContent = currentLoanData.state;
+
+            const sumInc = document.getElementById('summary-income');
+            if (sumInc) sumInc.textContent = currentLoanData.income;
+        }
+
+        // Render Loan Details Table based on selection
+        function renderLoanDetailsTable() {
+            const tableBody = document.getElementById('terms-table-body');
+            if (!tableBody) return;
+
+            const amount = currentLoanData.amount || 10000;
+            const terms = [24, 36, 48, 60];
+
+            let html = '';
+            terms.forEach(months => {
+                // Calculation using baseline ~9.9% - 14.9% representation
+                const r = 0.099 / 12;
+                const payment = (amount * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+                const total = payment * months;
+
+                html += `
+                    <tr>
+                        <td class="fw-bold">${months} Months</td>
+                        <td><span class="badge bg-light text-dark border">6.99% - 19.99%</span></td>
+                        <td class="fw-bold text-success">$${Math.round(payment).toLocaleString()} / mo</td>
+                        <td class="text-muted">$${Math.round(total).toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = html;
+        }
+
+        // Exact Button Action Trigger
+        function handleProceedClick(e) {
+            e.preventDefault();
+            navigateTo('login.html');
+        }
+
+        // Password Show/Hide Toggle
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('login-password');
+            const pwdIcon = document.getElementById('togglePasswordIcon');
+
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                pwdIcon.classList.remove('fa-eye');
+                pwdIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                pwdIcon.classList.remove('fa-eye-slash');
+                pwdIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Demonstration Login Submit
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const alertBox = document.getElementById('login-alert');
+            alertBox.classList.remove('d-none');
+
+            setTimeout(() => {
+                alert('Demonstration Login: Connection simulated successfully! In a live environment, this connects to your authentication backend.');
+                alertBox.classList.add('d-none');
+            }, 600);
+        }
+
+        function showForgotPasswordModal() {
+            alert('Password Recovery Demonstration: A password reset link would be emailed to your registered address.');
+        }
+
+        // Workspace Mode Switcher (Preview vs Code Files)
+        function switchMode(mode) {
+            const appContainer = document.getElementById('app-preview-container');
+            const codeContainer = document.getElementById('code-files-container');
+            const tabs = document.querySelectorAll('.workspace-tab');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            if (mode === 'preview') {
+                appContainer.classList.remove('d-none');
+                codeContainer.classList.add('d-none');
+                tabs[0].classList.add('active');
+            } else {
+                appContainer.classList.add('d-none');
+                codeContainer.classList.remove('d-none');
+                tabs[1].classList.add('active');
+                showFileCode('index.html');
+            }
+        }
+
+        // Source Code Display Generator
+        const sourceFiles = {
+            'index.html': `<!-- index.html - SendMaster Loan Landing Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SendMaster Loans | Explore Options</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">SendMaster</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="eligibility.html">Check Eligibility</a></li>
+                    <li class="nav-item"><a class="nav-link" href="loan-details.html">Loan Details</a></li>
+                </ul>
+                <a href="login.html" class="btn btn-outline-dark me-2">Sign In</a>
+                <a href="eligibility.html" class="btn btn-success">Check Eligibility</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section text-white bg-dark py-5">
+        <div class="container">
+            <h1 class="display-5 fw-bold">Explore Your Loan Options</h1>
+            <p class="lead">Review customizable personal loan possibilities and U.S. lending criteria transparently.</p>
+            <a href="eligibility.html" class="btn btn-success btn-lg">Check Eligibility</a>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="small text-muted mb-0">Loan approval is not guaranteed. Subject to lender criteria.</p>
+        </div>
+    </footer>
+</body>
+</html>`,
+
+            'eligibility.html': `<!-- eligibility.html - Eligibility Criteria & Demo Form -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Your Loan Eligibility | SendMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="fw-bold mb-3">Check Your Loan Eligibility</h1>
+        <form id="eligibilityForm" action="loan-details.html">
+            <div class="mb-3">
+                <label class="form-label">Preferred Loan Amount ($USD)</label>
+                <input type="number" class="form-control" id="el-amount" min="1000" max="50000" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Primary Loan Purpose</label>
+                <select class="form-select" id="el-purpose" required>
+                    <option value="Debt Consolidation">Debt Consolidation</option>
+                    <option value="Home Improvement">Home Improvement</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg">Continue</button>
+        </form>
+    </div>
+</body>
+</html>`,
+
+            'loan-details.html': `<!-- loan-details.html - Terms Review & Next Steps -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Your Loan Options | SendMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="fw-bold mb-4">Review Your Loan Options</h1>
+        
+        <!-- PROMINENT MANDATORY BUTTON CODE -->
+        <a href="login.html" class="btn btn-primary proceed-btn">
+            Proceed to Login to SendMaster
+        </a>
+    </div>
+</body>
+</html>`,
+
+            'login.html': `<!-- login.html - SendMaster Account Login -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in to SendMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="h3 fw-bold text-center">Sign in to SendMaster</h1>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Sign In</button>
+            <a href="index.html" class="d-block text-center mt-3">Return to Home</a>
+        </form>
+    </div>
+</body>
+</html>`,
+
+            'css/style.css': `/* css/style.css - SendMaster Common Stylesheet */
+:root {
+    --navy-primary: #0a192f;
+    --navy-secondary: #1e293b;
+    --green-accent: #10b981;
+    --green-hover: #059669;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    background-color: #f8fafc;
+}
+
+.btn-green {
+    background-color: var(--green-accent);
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Proceed Button Requirements */
+.proceed-btn {
+    background-color: var(--navy-primary) !important;
+    border-color: var(--navy-primary) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.proceed-btn:hover {
+    background-color: var(--green-accent) !important;
+    border-color: var(--green-accent) !important;
+}`,
+
+            'js/script.js': `// js/script.js - SendMaster Shared Logic & Persistence
+const STORAGE_KEY = 'sendmaster_loan_selection';
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('SendMaster JS Loaded');
+});`
+        };
+
+        let activeFile = 'index.html';
+
+        function showFileCode(fileName) {
+            activeFile = fileName;
+            document.getElementById('current-filename').textContent = fileName;
+            document.getElementById('file-code-display').textContent = sourceFiles[fileName] || '// File empty';
+
+            // Highlight active button
+            document.querySelectorAll('#code-files-container .list-group-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('file-btn-' + fileName.replace('.html','').replace('css/style.css','css').replace('js/script.js','js'));
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        function copyCurrentCode() {
+            const textToCopy = sourceFiles[activeFile];
+            if (textToCopy) {
+                // Clipboard fallback helper compliant with sandbox rules
+                const hiddenTextArea = document.createElement('textarea');
+                hiddenTextArea.value = textToCopy;
+                document.body.appendChild(hiddenTextArea);
+                hiddenTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(hiddenTextArea);
+
+                alert('Copied code for ' + activeFile + ' to clipboard!');
+            }
+        }
     </script>
 </body>
-
 </html>
